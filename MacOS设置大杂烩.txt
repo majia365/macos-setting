@@ -1,0 +1,762 @@
+
+https://macos-defaults.com/finder/nstableviewdefaultsizemode.html
+
+# Finder > Preferences > General
+# Show all filename extensions 
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Finder > Preferences > General
+# Show these items on ~/Desktop
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
+
+# Finder > Preferences > General
+# Show $HOME when opening new Finder windows
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}"
+
+# Finder > Preferences > Sidebar
+# Show these items in Finder sidebar
+# defaults write com.apple.finder ShowRecentTags -bool false
+# defaults write com.apple.finder SidebarPlacesSectionDisclosedState -bool true
+# defaults write com.apple.finder SidebarShowingSignedIntoiCloud -bool true
+# defaults write com.apple.finder SidebarShowingiCloudDesktop -bool false
+
+# Finder > Show view options
+# Always default to column view
+defaults write com.apple.Finder FXPreferredViewStyle -string "clmv"
+
+# Finder > Show view options
+# Arrange by kind
+# defaults write com.apple.Finder FXArrangeGroupViewBy -string "Kind"
+# /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy kind" ~/Library/Preferences/com.apple.finder.plist
+
+# Safari > Disable Java
+# defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabled -bool false
+# defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2JavaEnabledForLocalFiles -bool false
+
+# Safari > View > Hide/Show Favorites Bar
+# Hides Safari’s favorites/bookmarks bar by default
+defaults write com.apple.Safari ShowFavoritesBar -bool false
+
+# Safari > Preferences > Advanced
+# Show Developer menu item for developer tools
+# defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
+
+# Safari > Preferences > Search > Search engine
+# Set the Safari default search engine to DuckDuckGo
+# defaults write -g NSPreferredWebServices -string "{ NSWebServicesProviderWebSearch = { NSDefaultDisplayName = DuckDuckGo; NSProviderIdentifier = \"com.duckduckgo\"; }; }"
+# defaults write com.apple.SafariServices SearchProviderIdentifierMigratedToSystemPreference -int 1
+# defaults write com.apple.Safari SearchProviderIdentifier -string "com.duckduckgo"
+# defaults write com.apple.SafariTechnologyPreview SearchProviderIdentifier -string "com.duckduckgo"
+
+# System Preferences > General > Appearance
+# Set Appearance to "Auto"
+# defaults write -g AppleInterfaceStyleSwitchesAutomatically -bool true
+
+# System Preferences > Language & Region > General > Time Format
+# Enforces 24 hour time across all timestamps and clocks
+defaults write -g AppleICUForce24HourTime -bool true
+
+# System Preferences > Dock & Menu Bar > Dock size
+# Set the dock size to small
+defaults write com.apple.dock tilesize -int 42
+
+# System Preferences > Dock & Menu Bar > Dock
+# Set dock to hide/show automatically
+defaults write com.apple.dock autohide -bool true
+
+# System Preferences > Dock & Menu Bar > Dock
+# Set the dock on the left side of the display
+defaults write com.apple.dock orientation -string "left"
+
+# System Preferences > Dock & Menu Bar > Dock
+# Set dock to not display recent apps
+defaults write com.apple.dock show-recents -bool false
+
+# System Preferences > Dock & Menu Bar > Menu Bar
+# Automatically hide/show Menu Bar
+defaults write -g _HIHideMenuBar -bool true
+
+# System Preferences > Security & Privacy > General
+# Require password immediately after sleep or screensaver
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+# System Preferences > Security & Privacy > Firewall
+# Turn firewall on
+sudo defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+sudo launchctl load /System/Library/LaunchDaemons/com.apple.alf.agent.plist 2>/dev/null
+
+# System Preferences > Security & Privacy > Filevault
+# Enable FileVault and output the recovery key
+# if ! fdesetup status | grep $Q -E "FileVault is (On|Off, but will be enabled after the next restart)." >/dev/null; then
+#     sudo fdesetup enable -user "${USER}" | tee ~/Desktop/"FileVault Recovery Key.txt"
+# fi
+
+
+# Screencapture > Options > Save to…
+# Changes default location for screencaptures to ~/Documents
+defaults write com.apple.screencapture location -string "${HOME}/Documents/Screenshots/"
+
+# Terminal > Preferences > Profiles
+# Set default theme to my modified version of Basic with system colors for auto light/dark mode
+open "${PWD}/matthewferry.terminal"
+sleep 1 # Wait to make sure the theme is loaded
+defaults write com.apple.Terminal "Default Window Settings" -string "matthewferry"
+defaults write com.apple.Terminal "Startup Window Settings" -string "matthewferry"
+
+
+
+
+
+defaultswrite reference
+
+Mac OS defaultswrite commands for GUI improvements, perform in the terminal (Choose only what you need)
+TimeMachine
+
+    defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+    sudo defaults write /System/Library/LaunchDaemons/com.apple.backupd-auto StartInterval -int 86400
+
+Disable Annoying Pop up Alerts
+
+    defaults write com.apple.LaunchServices LSQuarantine -bool false
+    defaults write com.apple.CrashReporter DialogType none
+
+Disable Auto Save, Versions in built-in apps
+
+    defaults write -g ApplePersistence -bool no
+    defaults write -app textedit AutosavingDelay -int 0
+    defaults write -app 'preview' ApplePersistence -bool no
+
+Finder Tweaks
+Desktop Settings
+
+    defaults write com.apple.finder CreateDesktop -bool false
+    defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
+    defaults write com.apple.finder ShowHardDrivesOnDesktop -bool true
+    defaults write com.apple.finder ShowMountedServersOnDesktop -bool true
+    defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool true
+
+Sidebar icon size
+
+    defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
+
+Browser Settings
+
+    defaults write com.apple.finder QuitMenuItem -bool true
+    defaults write com.apple.finder ShowStatusBar -bool true
+    defaults write com.apple.finder ShowPathbar -bool true
+    defaults write com.apple.finder _FXSortFoldersFirst -bool true
+    defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+    defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+    defaults write com.apple.finder NewWindowTarget -string "PfDe"
+    defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desktop/"
+
+Animations
+
+    defaults write com.apple.finder DisableAllAnimations -bool true
+
+Behaviour
+
+    defaults write com.apple.finder AppleShowAllFiles -bool true
+    defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
+
+Alerts
+
+    defaults write com.apple.finder WarnOnEmptyTrash -bool false
+    defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+Dock Size
+
+    defaults write com.apple.dock tilesize -int 2
+    defaults write com.apple.dock tilesize -int 36
+
+Dock Behaviour
+
+    defaults write com.apple.dock pinning -string end
+    defaults write com.apple.dock mouse-over-hilite-stack -bool true
+    defaults write com.apple.dock mineffect -string "scale"
+    defaults write com.apple.dock minimize-to-application -bool true
+    defaults write com.apple.dock enable-spring-load-actions-on-all-items -bool true
+    defaults write com.apple.dock show-process-indicators -bool true
+    defaults write com.apple.dock static-only -bool true
+    defaults write com.apple.dock launchanim -bool false
+    defaults write com.apple.dock expose-animation-duration -float 0.1
+    defaults write com.apple.dock expose-group-by-app -bool false
+    defaults write com.apple.dock dashboard-in-overlay -bool true
+    defaults write com.apple.dock mru-spaces -bool false
+    defaults write com.apple.dock autohide-delay -float 0
+    defaults write com.apple.dock autohide-time-modifier -float 0
+    defaults write com.apple.dock autohide -bool true
+    defaults write com.apple.dock showhidden -bool true
+    defaults write com.apple.dock show-recents -bool false
+
+Save Dialog Options
+
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+    defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+
+Print Options
+
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
+    defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
+
+Show all filename extensions
+
+    defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+.DS_Store
+
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+    defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+Spring loading for directories
+
+    defaults write NSGlobalDomain com.apple.springing.enabled -bool true
+    defaults write NSGlobalDomain com.apple.springing.delay -float 0
+
+Disk Image Behaviour
+
+    defaults write com.apple.frameworks.diskimages skip-verify -bool true
+    defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
+    defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
+    defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool false
+    defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool false
+
+Do not reopen previous content window on next launch
+
+    defaults write com.apple.systempreferences NSQuitAlwaysKeepsWindows -bool false
+    defaults write com.apple.QuickTimePlayer NSQuitAlwaysKeepsWindows -int 0
+    defaults write com.apple.Preview NSQuitAlwaysKeepsWindows -int 0
+
+Disable automatic termination of inactive apps
+
+    defaults write NSGlobalDomain NSDisableAutomaticTermination -bool true
+    defaults write com.apple.iChat NSDisableAutomaticTermination -bool yes
+
+Disable Application state on Restart or Boot
+
+    defaults write com.apple.loginwindow TALLogoutSavesState -bool false
+    defaults write com.apple.loginwindow LoginwindowLaunchesRelaunchApps -bool false
+
+Dashboard
+
+    defaults write com.apple.dashboard mcx-disabled -bool true
+
+GUI Animations, Improvements
+
+    defaults write -g com.apple.swipescrolldirection -bool false
+    defaults write -g AppleShowScrollBars -string "Always"
+    defaults write -g AppleEnableMenuBarTransparency -bool false
+    defaults write -g QLPanelAnimationDuration -float 0
+    defaults write -g NSWindowResizeTime -float 0.001
+    defaults write -g NSScrollAnimationEnabled -bool false
+    defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
+    defaults write -g AppleInterfaceStyle -string "Dark"
+    defaults write com.apple.Siri StatusMenuVisible -bool false
+
+Better Security
+
+    defaults write com.apple.screensaver askForPassword -int 1
+    defaults write com.apple.screensaver askForPasswordDelay -int 0
+    sudo defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.plist LocationServicesEnabled -bool NO
+
+Enable AirDrop over Ethernet and on unsupported Macs
+
+    defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
+
+Disable the built-in captive portal (use your browser instead)
+
+sudo defaults write /Library/Preferences/SystemConfiguration/com.apple.captive.control Active -bool false
+Increase sound quality for Bluetooth
+
+    defaults write com.apple.BluetoothAudioAgent "Apple Bitpool Min (editable)" -int 40
+
+Enable full keyboard access for all controls
+
+    defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+Sound Settings
+
+    defaults write NSGlobalDomain com.apple.sound.beep.feedback -int 0
+    defaults write NSGlobalDomain com.apple.sound.uiaudio.enabled -int 0
+    defaults write NSGlobalDomain com.apple.sound.beep.volume -float 0.0
+
+Screen Sharing
+
+    defaults write com.apple.ScreenSharing controlObserveQuality 2 (1=black and white, 2=grey scale, 3=8 bit color, 4=16 bit color, 5=full color)
+    defaults write com.apple.ScreenSharing 'NSToolbar Configuration ControlToolbar' -dict-add 'TB Item Identifiers' '(Scale,Control,Share,Curtain,Capture,FullScreen,GetClipboard,SendClipboard,Quality)'
+
+Disk Space Alerts (use with Caution)
+
+    defaults write com.apple.diskspaced checkAllVolumes 0
+    defaults write com.apple.diskspaced debugLog 1
+    defaults write com.apple.diskspaced warningInterval 3600
+    defaults write com.apple.diskspaced freeSpaceWarningLevel 1
+    defaults write com.apple.diskspaced minFreeSpace 5
+
+Resolve Slow Shutdowns (use with Caution)
+
+    sudo defaults write /System/Library/LaunchDaemons/com.apple.coreservices.appleevents ExitTimeOut -int 1
+    sudo defaults write /System/Library/LaunchDaemons/com.apple.securityd ExitTimeOut -int 1
+    sudo defaults write /System/Library/LaunchDaemons/com.apple.mDNSResponder ExitTimeOut -int 1
+    sudo defaults write /System/Library/LaunchDaemons/com.apple.diskarbitrationd ExitTimeOut -int 1
+    sudo defaults write /System/Library/LaunchAgents/com.apple.coreservices.appleid.authentication ExitTimeOut -int 1
+
+
+
+
+
+
+
+Motivation
+
+I love macOS. My job revolves around it, I write about it on this site and I have been using it for about 20 years with no major complaint. Hell, this domain starts with the word “mac”.
+
+However some of the behaviours in the UI that I have been used to over the years are not set by defaults. It would drive me mental not having these.
+
+As most of my post, this is for my own documentation, but in the spirit of sharing I hope that this might help someone out there.
+
+First things first…
+Dependencies
+
+This section – strictly speaking – does not talk about macOS defaults. But I absolutely need these tools to be able to set up my Mac fast, comfortably and properly.
+
+    Homebrew: Command line package manager for macOS. I install most of my programs with it. How to install it is described on the homepage.
+
+    dockutil: Command line utility for managing Mac OS X dock items. Installed via homebrew.
+    mysides: Command line tool for Finder sidebar modification. Installed via homebrew as well.
+
+Changing settings
+
+Personally I have scripted these settings to be done automatically. Some snippets are stolen of course 😎. For this post however I ll mention the settings over the GUI as well.
+Finder & Desktop
+
+This are the settings you can change over the Finder preferences (⌘ + ,) or the view options (⌘ + j).
+
+    Always show file suffixes: macOS does not need this to know the file type, but I do. The icon previews are by far not enough.
+    Always search the current folder: For global search on disk I user either Spotlight or Alfred.app
+    Show the path bar and the status bar: This is quite spiffy since it provides the location in the Finder and the available space on disk at a glance. Plus I prefer the aesthetics.
+
+    Visible devices in the sidebar: I like to see both hard disks, removable devices and servers in my sidebar for quicker access.
+    Items to display on the desktop: To maximise the quick access I want to all manner of volumes on my desktop as well.
+    Open new Finder windows showing the home directory: This might just be a matter of taste.
+    Open new Finder windows in list view: The default, which is the icon view drives me up the walls.
+
+In addition to the GUI, these settings can be changed with a simple bash script. This is the corresponding snippet of the script.
+
+# Always show suffixes
+defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+# Always search current folder
+defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+# Show path bar and status bar
+defaults write com.apple.finder ShowStatusBar -bool true
+defaults write com.apple.finder ShowPathbar -bool true
+
+# Devices for the sidebar
+defaults write com.apple.sidebarlists systemitems -dict-add ShowServers -int 1
+defaults write com.apple.sidebarlists systemitems -dict-add ShowRemovable -int 1
+defaults write com.apple.sidebarlists systemitems -dict-add ShowHardDisks -int 1
+defaults write com.apple.sidebarlists systemitems -dict-add ShowEjectables -int 1
+
+# Items to display on the desktop
+defaults write com.apple.finder ShowHardDrivesOnDesktop -int 1
+defaults write com.apple.finder ShowMountedServersOnDesktop -int 1
+defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -int 1
+defaults write com.apple.finder ShowRemovableMediaOnDesktop -int 1
+
+# Open home in new window
+defaults write com.apple.finder NewWindowTarget -string "PfLo"
+defaults write com.apple.finder NewWindowTargetPath -string "'file://$HOME/"
+
+# List view in by default
+# Possible: `icnv`, `clmv`, `Flwv`
+defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+
+# Show the ~/Library folder
+chflags nohidden ~/Library
+
+Dock
+
+I general, there is not much to the Dock.app. But a few fixes/adjustments go a long way as a matter of quality of life. Most of these settings are accessible through the System Preferences.app or a simple drag and drop.
+
+    Remove everything from the dock: I keep the following items in the beginning and add others as I go:
+        AppCleaner.app
+        App Store.app
+        Messages.app
+        System Preferences.app
+        iTerm.app
+        Safari.app
+
+    Automatically hide and show the Dock: Since I work quite a lot on the MacBook I take all the real estate of the screen that I can get. However for this change not to drive me nuts, I need the popup of the hidden Dock to be significantly faster than the default settings. This is unfortunately this is only possible via the command line.
+
+The complete snippet for the Dock settings:
+
+# Dock: Make it popup faster
+defaults write com.apple.dock autohide-delay -float 0
+defaults write com.apple.dock autohide-time-modifier -float 0
+
+# Automatically hide and show the Dock
+defaults write com.apple.dock autohide -int 1
+
+# Remove everything
+dockutil --remove all > /dev/null 2>&1
+
+# Minimal setup
+dockutil --add /Applications/AppCleaner.app > /dev/null 2>&1
+dockutil --add /System/Applications/App\ Store.app > /dev/null 2>&1
+dockutil --add /System/Applications/Messages.app > /dev/null 2>&1
+dockutil --add /System/Applications/System\ Preferences.app > /dev/null 2>&1
+dockutil --add /Applications/iTerm.app > /dev/null 2>&1
+dockutil --add /Applications/Safari.app > /dev/null 2>&1
+
+General UI behaviour
+
+    Scroll bars visibility: For a few macOS versions now the scroll bar has been reasonably discrete and small enough, which is why I like it to be always around.
+
+    Right click for magic mouse: God knows why this is not the defaults behaviour.
+    Tap and Two-Finger-Tap for the trackpad: I can’t really say when I use a click or tap on the trackpad, but I need the right click with the two-finger-tap for sure.
+
+    Much faster keyboard key repeat: This is of at most importance for navigating through text. For the speed I need the settings in the GUI isn’t not enough. I change this in a script.
+    Turn off auto correct & auto capitalize: This would be otherwise annoying to no end.
+
+    Different spaces for different displays: Probably a matter of taste again.
+    Do not automatically rearrange Spaces based on most recent use: I like to know where all my windows are and don’t want macOS to reorder this automatically.
+    Hot corners: I can’t work without these. I Use them to access the desktop, call up Exposé and start the screensaver which also locks the Mac straight away.
+
+Here is how I implement the settings in a script:
+
+# Scroll bars
+# Possible: "WhenScrolling", "Automatic" and "Always"
+defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
+
+# Right click for magic mouse
+defaults write com.apple.AppleMultitouchMouse MouseButtonMode -string TwoButton
+
+# System Preferences: Trackpad
+# Trackpad: Tap
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+# Trackpad: Two-Finger-Tap
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
+defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+defaults write com.apple.AppleMultitouchTrackpad TrackpadRightClick -bool true
+
+# Keyboard key repeat
+defaults write -g InitialKeyRepeat -int 10
+defaults write -g KeyRepeat -int 1
+
+# Auto correct off & Auto capitalize off
+defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+
+# Different spaces for different displays
+defaults write com.apple.spaces spans-displays -int 0
+# Don’t automatically rearrange Spaces based on most recent use
+defaults write com.apple.dock mru-spaces -int 0
+
+# Hot corners
+# Possible values: 0 no-op; 2 Mission Control; 3 Show application windows;
+# 4 Desktop; 5 Start screen saver; 6 Disable screen saver; 7 Dashboard;
+# 10 Put display to sleep; 11 Launchpad; 12 Notification Center
+defaults write com.apple.dock wvous-tl-corner -int 3
+defaults write com.apple.dock wvous-tl-modifier -int 0
+
+defaults write com.apple.dock wvous-tr-corner -int 4
+defaults write com.apple.dock wvous-tr-modifier -int 0
+
+defaults write com.apple.dock wvous-bl-corner -int 2
+defaults write com.apple.dock wvous-bl-modifier -int 0
+
+defaults write com.apple.dock wvous-br-corner -int 5
+defaults write com.apple.dock wvous-br-modifier -int 0
+
+
+
+
+
+
+
+
+
+
+# 访达 - 显示退出菜单项 = OFF
+% defaults write com.apple.finder QuitMenuItem -bool false;
+# 访达 - 显示窗口标题栏图标 = OFF
+% defaults write com.apple.universalaccess showWindowTitlebarIcons -bool false;
+# 访达 - 窗口标题栏图标显示延迟 = 0
+% defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0;
+# 访达 - 新文档默认保存到云存储 = OFF
+% defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false;
+# 访达 - 侧边栏图标大小 = 大 {1:小; 2:中; 3:大}
+% defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 3;
+//SidebarPlacesSectionDisclosedState
+//SidebarShowingSignedIntoiCloud
+//SidebarShowingiCloudDesktop
+# 访达 - 显示所有文件 = OFF
+% defaults write com.apple.finder AppleShowAllFiles -bool false;
+killall Finder;
+
+# 新的可移动磁盘挂载时打开访达窗口
+% defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true；
+# 在快速查看中允许进行选择和拷贝
+% defaults write com.apple.finder QLEnableTextSelection -bool true;
+% killall Finder;
+
+# 不为网络卷创建.DS_Store目录
+% defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true;
+
+# 可移动磁盘挂载为只读/读写模式
+% defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true;
+% defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool false;
+or
+% defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool false;
+% defaults write com.apple.frameworks.diskimages auto-open-rw-root -bool true;
+
+# 打印任务完成时自动退出打印机应用
+% defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true;
+
+# 移除用户资料库文件夹隐藏属性 ls -lO
+% chflags nohidden ~/Library
+
+
+defaults write com.apple.PowerChime ChimeOnAllHardware -bool false;
+defaults write com.apple.PowerChime ChimeOnNoHardware -bool true;
+killall PowerChime;
+
+# Hide the Time Machine and Volume icons from the menu bar 
+for domain in ~/Library/Preferences/ByHost/com.apple.systemuiserver.*; do
+    sudo defaults write "${domain}" dontAutoLoad -array \
+        "/System/Library/CoreServices/Menu Extras/TimeMachine.menu" \
+        "/System/Library/CoreServices/Menu Extras/Volume.menu"
+done
+
+# Disable the "Are you sure you want to open this application?" dialog
+defaults write com.apple.LaunchServices LSQuarantine -bool false
+
+# Expand save panel by default 
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+# Expand print panel by default 
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true;
+
+# Enable Crash Reporting as Notifications in Mac OS X
+defaults write com.apple.CrashReporter DialogType crashreport;
+defaults write com.apple.CrashReporter UseUNC 1;
+defaults write com.apple.CrashReporter DialogType none;
+
+# Wipe all app icons from the Dock???
+#defaults write com.apple.dock persistent-apps -array
+# Magnificate the Dock???
+#defaults write com.apple.dock magnification -bool false
+defaults write com.apple.dock ResetLaunchPad -bool TRUE;
+killall Dock;
+
+
+
+
+# Trackpad
+# Enable `Tap to click`
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+% defaults -currentHost read NSGlobalDomain
+{
+    PKSecureElementAvailableFlagsByHostSome = 3;
+    "com.apple.ColorSync.Devices" =     {
+        "Device.mntr.37D8832A-2D66-02CA-B9F7-8F30A301B230" =         {
+            CustomProfiles =             {
+                1 = "/System/Library/ColorSync/Profiles/Display P3.icc";
+            };
+        };
+    };
+    "com.apple.mouse.tapBehavior" = 1;
+    "com.apple.trackpad.enableSecondaryClick" = 1;
+    "com.apple.trackpad.fiveFingerPinchSwipeGesture" = 0;
+    "com.apple.trackpad.fourFingerHorizSwipeGesture" = 2;
+    "com.apple.trackpad.fourFingerPinchSwipeGesture" = 0;
+    "com.apple.trackpad.fourFingerVertSwipeGesture" = 2;
+    "com.apple.trackpad.momentumScroll" = 1;
+    "com.apple.trackpad.pinchGesture" = 1;
+    "com.apple.trackpad.rotateGesture" = 1;
+    "com.apple.trackpad.scrollBehavior" = 2;
+    "com.apple.trackpad.threeFingerDragGesture" = 0;
+    "com.apple.trackpad.threeFingerHorizSwipeGesture" = 2;
+    "com.apple.trackpad.threeFingerTapGesture" = 0;
+    "com.apple.trackpad.threeFingerVertSwipeGesture" = 2;
+    "com.apple.trackpad.twoFingerDoubleTapGesture" = 1;
+    "com.apple.trackpad.twoFingerFromRightEdgeSwipeGesture" = 0;
+    "com.apple.trackpad.version" = 5;
+}
+
+# Map bottom right Trackpad corner to right-click
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadRightClick -bool true
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.trackpadCornerClickBehavior -int 1
+defaults -currentHost write NSGlobalDomain com.apple.trackpad.enableSecondaryClick -bool true
+
+# Terminal.app设置
+# Use a custom theme
+# Use a modified version of the Solarized Dark theme by default in Terminal.app
+TERM_PROFILE='Solarized_Dark';
+TERM_PATH='./';
+CURRENT_PROFILE="$(defaults read com.apple.terminal 'Default Window Settings')";
+if [ "${CURRENT_PROFILE}" != "${TERM_PROFILE}" ]; then
+    open "$TERM_PATH$TERM_PROFILE.terminal"
+    defaults write com.apple.Terminal "Default Window Settings" -string "$TERM_PROFILE"
+    defaults write com.apple.Terminal "Startup Window Settings" -string "$TERM_PROFILE"
+fi
+defaults import com.apple.Terminal "$HOME/Library/Preferences/com.apple.Terminal.plist"
+
+# Safari.app设置
+# Show the full URL in the address bar
+defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
+# Enable the `Develop` menu and the `Web Inspector`
+#defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
+#defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+#defaults write com.apple.Safari IncludeDevelopMenu -bool true
+# Enable `Debug` menu
+#defaults write com.apple.Safari IncludeInternalDebugMenu -bool true
+# Add a context menu item for showing the `Web Inspector` in web views
+#defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+# Show Safari's Status Bar
+defaults write com.apple.Safari ShowStatusBar -bool false
+# auto fill passwords
+defaults write com.apple.Safari AutoFillPasswords -bool true
+
+# Spotlight
+# Load new settings before rebuilding the index （インデックスを再構築する前に新しい設定を読み込む）
+killall mds > /dev/null 2>&1
+# Make sure indexing is enabled for the main volume （メインディスクのインデックスを有効にする）
+sudo mdutil -i on / > /dev/null
+# Rebuild the index from scratch （インデックスを最初から再構築）
+sudo mdutil -E / > /dev/null
+
+
+
+defaults write com.apple.dock showhidden -bool true;
+defaults write com.apple.dock expose-animation-duration -float 0.12;
+killall Dock;
+
+defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false;
+killall Mail;
+
+defaults write com.apple.finder QLEnableTextSelection -bool true;
+defaults write com.apple.finder CreateDesktop -bool false;
+killall Finder;
+
+
+sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName;
+
+# SSD 开启 TRIM 支持
+sudo trimforce enable
+
+# APP安装开启任何来源
+sudo spctl --master-disable
+
+# 关闭SIP
+csrutil disable
+# 查看SIP状态
+csrutil status
+
+#网络层端口转发
+由于低级端口，如80/443等缺省服务端口需要root用户才能使用，故通过端口转发，由普通用户程序绑定高级8xxx端口。
+sudo vi /etc/pf.conf
+rdr-anchor "com.apple/*"
+rdr on lo0 inet proto tcp from any to 127.0.0.1 port 80 -> 127.0.0.1 port 8080
+rdr on lo0 inet proto tcp from any to 127.0.0.1 port 443 -> 127.0.0.1 port 8443
+sudo pfctl -f /etc/pf.conf
+sudo pfctl -e
+
+
+
+
+
+
+defaults write com.apple.dashboard mcx-disabled -boolean YES
+
+
+$ 电源管理（pmset）
+battery / charger / ups / all
+
+# 睡眠-系统睡眠定时（单位：分钟）
+sudo pmset -a sleep 10
+# 睡眠-显示器睡眠定时（单位：分钟）
+sudo pmset -b displaysleep 5
+sudo pmset -c displaysleep 10
+# 睡眠-磁盘睡眠定时（单位：分钟）
+sudo pmset -a disksleep 10
+# 睡眠-tcp保活
+sudo pmset -a tcpkeepalive 1
+# 睡眠-tty保活
+sudo pmset -a ttyskeepawake 0
+# 睡眠-睡眠时网络服务
+sudo pmset -b networkoversleep 0
+sudo pmset -c networkoversleep 1
+# 睡眠-睡眠后自动断电
+sudo pmset -a autopoweroff 1
+sudo pmset -a autopoweroffdelay 3600
+# 冬眠模式 3 or 25
+sudo pmset -a hibernatemode 3
+sudo pmset -a hibernatefile /var/vm/hibernatefile
+# standby
+sudo pmset -a standby 1
+sudo pmset -a highstandbythreshold 50
+sudo pmset -a standbydelay 3600
+sudo pmset -a standbydelayhigh 3600
+sudo pmset -a standbydelaylow 1800
+# power nap
+sudo pmset -a powernap 0
+# 唤醒-开盖唤醒
+sudo pmset -a lidwake 1
+# 唤醒-切换电源唤醒
+sudo pmset -a acwake 0
+# 唤醒-以太网唤醒
+sudo pmset -a womp 0
+# 唤醒-调制解调器唤醒
+sudo pmset -a ring 0
+# 唤醒-靠近唤醒
+sudo pmset -a proximitywake 0
+# 性能-GPU切换
+sudo pmset -b gpuswitch 0
+sudo pmset -c gpuswitch 2
+# 通用-电池低亮度
+sudo pmset -b lessbright 1
+# 通用-显示器睡眠亮度
+sudo pmset -b halfdim 0
+sudo pmset -c halfdim 1
+# 通用-运动传感磁头
+sudo pmset -a sms 1
+# 通用-恢复缺省值
+#sudo pmset -c 2 -b 1 -u 1
+
+
+% nvram -p
+LocationServicesEnabled	%01
+fmm-computer-name	ZhongMBA
+auto-boot	true
+SystemAudioVolume	%80
+;IORegistryCurrentSleepMode	%00
+;SystemAudioVolumeDB	%d
+;EnableTRIM	%01
+;backlight-level	M%00
+;StartupMute	%01
+
+sudo trimforce enable/disable
+
+
+
+设备序列号
+% ioreg -rd1 -c IOPlatformExpertDevice | grep "IOPlatformSerialNumber";
+"IOPlatformSerialNumber" = "C02DP9QBQ6L4"
+本机本用户唯一标识
+% ioreg -rd1 -c IOPlatformExpertDevice | grep "IOPlatformUUID"
+"IOPlatformUUID" = "A393A6CA-628F-5A5D-B941-402B3C408A92"
+
