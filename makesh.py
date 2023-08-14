@@ -23,6 +23,8 @@ def md2sh(infile, outfile=""):
         doc = mistletoe.Document(fin)
         # init shell script header
         codelines = [ "#!/bin/sh\n\n" ]
+        # patch: last execute command about kill terminal or reboot
+        endline = ""
         for node in doc.children:
             # extract heading
             if isinstance(node, Heading):
@@ -35,9 +37,19 @@ def md2sh(infile, outfile=""):
                 for line in node.content.splitlines():
                     #print_trace(line)
                     if line=="": continue
+                    # patch: last execute command about kill terminal or reboot
+                    if line.startswith("% killall Terminal") and endline=="":
+                        endline = "killall Terminal;\n"
+                        continue
+                    if line.startswith("% sudo shutdown"):
+                        endline = "sudo shutdown -r now;\n"
+                        continue
+                    # add code line
                     if line.startswith("% "):
                         #print_trace(line)
                         codelines.append(line[2:] + "\n")
+        # patch: last execute command about kill terminal or reboot
+        codelines.append(endline)
     # write output file
     with open(shfile, "wt", encoding="utf-8") as fo:
         fo.writelines(codelines)
