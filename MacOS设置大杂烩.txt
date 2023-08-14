@@ -3,6 +3,25 @@ url:
 https://macos-defaults.com/finder/nstableviewdefaultsizemode.html
 
 
+
+defaults write com.apple.helpviewer "DevMode" -bool "true";
+
+
+
+Allows you to select the behavior when a key is held down for a long time. The two possible behaviors are:
+    show character accents menu (default)
+    repeat character while key held
+Restarting the Mac, closing the session or restarting the application is necessary to take into effect the changes.
+defaults write NSGlobalDomain "ApplePressAndHoldEnabled" -bool "true" 
+
+
+Drag a file over an icon in the Dock, hover, and the application will open. The behaviour is unchanged if the app is already open. This behaviour has been observed with Preview, Quicktime, and iWork (Keynote, Pages, Numbers).
+Spring loading is disabled for Dock items.
+defaults write com.apple.dock "enable-spring-load-actions-on-all-items" -bool "false" && killall Dock;
+
+
+
+
 Flash clock time separators 顶栏时间分隔符闪烁
 When enabled, the clock indicator (which by default is the colon) will flash on and off each second.
 defaults write com.apple.menuextra.clock "FlashDateSeparators" -bool "false" && killall SystemUIServer
@@ -240,10 +259,6 @@ Show all filename extensions
 
     defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-.DS_Store
-
-    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-    defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 Spring loading for directories
 

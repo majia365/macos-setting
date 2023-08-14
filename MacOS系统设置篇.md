@@ -125,7 +125,8 @@ Hot corners Possible values:
 % defaults write com.apple.dock orientation -string right;
 # 最小化窗口时使用 = 缩放效果（取值：genie/scale/suck）
 % defaults write com.apple.dock mineffect -string scale;
-连按窗口标题栏以 = 缩放
+连按窗口标题栏以 = 缩放（Minimize:最小化/Maximize:缩放）
+defaults write NSGlobalDomain AppleActionOnDoubleClick -string Maximize;
 将窗口最小化为应用程序图标 = OFF
 弹跳打开应用程序 = ON
 # 自动显示和隐藏程序坞 = OFF
@@ -188,20 +189,14 @@ Hot corners Possible values:
 % killall Dock;
 ```
 
-```
-# 启动台大小 = 9*7
-% defaults write com.apple.dock springboard-columns -int 9;
-% defaults write com.apple.dock springboard-rows -int 7;
-% killall Dock;
-```
-
 ### 调度中心 ### 
 
 ```
 [调度中心]
 #根据最近的使用情况自动重新排列空间 = OFF
 % defaults write com.apple.dock mru-spaces -bool false;
-切换到某个应用程序时，会切换到包含该应用程序的打开窗口的空间 = ON
+# 切换到某个应用程序时，会切换到包含该应用程序的打开窗口的空间 = ON
+% defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true;
 使窗口按应用程序成组 = OFF
 显示器具有单独的空间 = ON
 ---
@@ -494,7 +489,8 @@ or off
 在光线较弱时调整键盘亮度 = ON
 闲置关闭键盘背景灯 = OFF
 按下fn键时 = 更改输入法
-将F1F2等键用作标准功能键 = ON
+# 将F1F2等键用作标准功能键 = ON
+% defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true;
 ; 键盘 - 修饰键
 中英键 = 中英
 Control键 = Ctl
@@ -502,13 +498,29 @@ Option键 = Opt
 Command键 = Cmd
 地球仪键 = 地球仪键
 ; 文本
-自动纠正拼写 = OFF
-自动大写字词的首字母 = OFF
-连按两下空格键插入句号 = OFF
-拼写 = U.S.English
-使用智能引号和破折号 = OFF
+# 自动纠正拼写 = OFF
+% defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false;
+% defaults write NSGlobalDomain WebAutomaticSpellingCorrectionEnabled -bool false;
+# 自动大写字词的首字母 = OFF
+% defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false;
+# 连按两下空格键插入句号 = OFF
+% defaults write NSGlobalDomain NSAutomaticPeriodSubstitutionEnabled -bool false;
+# 拼写 - 按照语言自动拼写 = OFF
+% defaults write NSGlobalDomain NSSpellCheckerAutomaticallyIdentifiesLanguages -bool false;
+# 拼写 = U.S.English
+% defaults write NSGlobalDomain NSPreferredSpellServerLanguage -string en;
+# 使用智能引号和破折号 = OFF
+% defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false;
+% defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false;
 双引号样式 = "abc"
 单引号样式 = 'abc'
+? defaults read NSGlobalDomain NSUserQuotesArray 
+(
+    "\\"",
+    "\\"",
+    "'",
+    "'"
+)
 ; 快捷键
 使用键盘导航在控制间移动焦点 = ON
 ; 快捷键 - 启动台与程序坞
@@ -667,6 +679,8 @@ Command键 = Cmd
 [时间机器]
 自动备份 = OFF
 在菜单栏中显示时间机器 = OFF
+; 选项
+允许电池供电时进行备份 = OFF
 ```
 
 ### 启动磁盘 ### 
@@ -1062,37 +1076,89 @@ iCloud照片 = ON
 ```
 [终端 - 偏好设置]
 ; 通用
-使用描述文件新建窗口 = Homebrew
-Shell的打开方式 = /bin/zsh
+# 使用描述文件新建窗口 = Homebrew
+% defaults write com.apple.Terminal "Startup Window Settings" -string Homebrew;
+# Shell的打开方式 = /bin/zsh
+% defaults write com.apple.Terminal Shell -string "/bin/zsh";
 新窗口打开方式 = 默认
 新标签页打开方式 = 相同
-使用Cmd-1至Cmd-9切换标签页 = ON
+# 使用Cmd-1至Cmd-9切换标签页 = ON
+% defaults write com.apple.Terminal Command1Through9SwitchesTabs -bool true;
 ; 描述文件
-默认 = Homebrew
+# 默认 = Homebrew
+% defaults write com.apple.Terminal "Default Window Settings" -string Homebrew;
 ; 描述文件-文本
+defaults read com.apple.Terminal "Window Settings" −dict "Homebrew"
+# 平滑文本 = OFF
+FontAntialias = 0;
+# 光标 = 块（0:块/1:下划线/2:竖条）
+CursorType = 0;
+# 闪动光标 = ON
+CursorBlink = 1; 
 ; 描述文件-窗口
-标题 = tty/工作路径或文稿/路径/活跃进程名称
-窗口大小 = 120*40
+标题 = 工作路径或文稿/路径/活跃进程名称
+ShowRepresentedURLPathInTitle = 1;
+活跃进程名称 = ON
+ShowActiveProcessInTitle = 1;
+活跃进程参数 = OFF
+ShowActiveProcessArgumentsInTitle = 0;
+TTY名称 = OFF
+ShowTTYNameInTitle = 0;
+尺寸 = OFF
+ShowDimensionsInTitle = 0;
+# 窗口大小 = 120*40
+columnCount = 120;
+rowCount = 40;
 回滚行数限制 = 10000
+ShouldLimitScrollback = 1;
+ScrollbackLines = 10000;
 重新打开窗口时恢复文本 = ON
 恢复的行数限制 = 10000
 在恢复的文本后插入书签 = OFF
 在程序坞中显示状态和当前内容 = OFF
 ; 描述文件-标签页
 标题 = 工作路径或文稿/路径/活跃进程名称
+ShowActiveProcessArgumentsInTabTitle = 0;
+ShowTTYNameInTabTitle = 0;
 有自定标题时显示其他项目 = OFF
 显示活动指示器 = ON
 ; 描述文件-Shell
-当Shell退出时 = 关闭窗口
-关闭之前先询问 = screen/tmux
+# 当Shell退出时 = 关闭窗口（0:关闭窗口/1:当shell完全退出后关闭/2:不关闭窗口）
+shellExitAction = 0;
+关闭之前先询问 = 1（2:始终/0:永不/1:仅当有进程）
+warnOnShellCloseAction = 1;
+不是登录Shell和以下项目时 = screen/tmux
 ; 描述文件-键盘
 将Option键用作Meta键 = OFF
-滚动备用屏幕 = OFF
+# 滚动备用屏幕 = OFF
+ScrollAlternateScreen = 0;
 ; 描述文件-高级
+声明终端为 = xterm
+TerminalType = xterm;
 文本编码 = Unicode(UTF-8)
 启动时设置locale环境变量 = ON
 ; 窗口组
 ; 编码
+defaults read com.apple.Terminal StringEncodings;
+(
+    4,
+    30,
+    1,
+    5,
+    2147484175,
+    12,
+    2147486214,
+    2147486000,
+    2147485234,
+    2147485233,
+    2147486211
+)
+```
+
+```
+# 安全键盘输入 = OFF
+% defaults write com.apple.Terminal SecureKeyboardEntry -bool false;
+% killall Terminal;
 ```
 
 ### 文本编辑 ###
@@ -1151,25 +1217,108 @@ HTML存储编码 = UTF-8
 % killall TextEdit;
 ```
 
+### 终端监视器 ###
+
+```
+[终端监视器 - 偏好设置]
+; 显示
+# 程序坞图标 = 显示应用程序图标（5:显示CPU使用率/6:显示CPU历史记录/2:显示网络使用率/3:显示硬盘活动/0:显示应用程序图标）
+% defaults write com.apple.ActivityMonitor IconType -int 0;
+# 更新频率 = 一般（非常频繁:1秒/频繁:2秒/一般:5秒）
+% defaults write com.apple.ActivityMonitor UpdatePeriod -int 5;
+# 过去12小时内使用的应用程序 = ON
+% defaults write com.apple.ActivityMonitor ShowCategoryAppsinLast12Hours -bool true;
+% killall Activity\ Monitor;
+```
+
+### 音乐 ###
+
+```
+[音乐 - 偏好设置]
+; 通用
+# 显示iTunes Store = OFF（ON:2/OFF:1）
+% defaults write com.apple.Music showStoreInSidebar -int 1;
+显示星级评分 = OFF
+歌曲列表复选框 = OFF
+列表大小 = 中
+# 歌曲更改时通知 = OFF
+% defaults write com.apple.Music userWantsPlaybackNotifications -bool false;
+; 播放
+; 文件
+; 访问限制
+; 高级
+# 自动更新插画 = OFF
+% defaults write com.apple.Music automaticallyDownloadArtwork -bool false;
+# 在其他所有窗口前端显示迷你播放程序 = OFF
+% defaults write com.apple.Music miniPlayerAlwaysOnTop -bool false;
+# 在其他所有窗口前端播放视频 = OFF
+% defaults write com.apple.Music movieWindowAlwaysOnTop -bool false;
+% killall Music;
+```
+
 
 ## 系统优化设置 ##
 
+
+
+### 启动台相关 ###
+
+```
+# 启动台相关
+# 启动台大小 = 9*7
+% defaults write com.apple.dock springboard-columns -int 9;
+% defaults write com.apple.dock springboard-rows -int 7;
+% killall Dock;
+```
 
 ### 截屏相关 ###
 
 ```
 # 截屏相关
-# 截屏 - 截屏文件保存位置 = ${HOME}/Downloads
+# 截屏文件保存位置 = ${HOME}/Downloads
 % defaults write com.apple.screencapture location "${HOME}/Downloads";
-# 截屏 - 截屏文件格式 = png
+# 截屏文件格式 = png
 % defaults write com.apple.screencapture type -string png;
-# 截屏 - 截屏时显示缩略图 = ON
+# 截屏时显示缩略图 = ON
 % defaults write com.apple.screencapture show-thumbnail -bool true;
-# 截屏 - 截屏无阴影 = ON
+# 截屏无阴影 = ON
 % defaults write com.apple.screencapture disable-shadow -bool true;
-# 截屏 - 截屏文件名包含日期时间 = OFF
+# 截屏文件名包含日期时间 = OFF
 % defaults write com.apple.screencapture include-date -bool false;
 % killall SystemUIServer;
 ```
 
+### 终端相关 ###
+
+```
+# 终端相关
+# 焦点跟随鼠标光标到达任何终端窗口 = ON
+% defaults write com.apple.Terminal FocusFollowsMouse -bool true;
+% killall Terminal;
+```
+
+### 时间机器相关 ###
+
+```
+# 时间机器相关
+# 时间机器 - 连接新磁盘时不询问是否作为备份卷 = ON
+% defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true;
+```
+
+### 磁盘相关 ###
+
+```
+# 磁盘相关
+# 不生成.DS_Store文件夹
+% defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true;
+% defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true;
+```
+
+### 安全相关 ###
+
+```
+# 安全相关
+# 提示从Internet下载的应用程序 = OFF
+% defaults write com.apple.LaunchServices LSQuarantine -bool false;
+```
 
