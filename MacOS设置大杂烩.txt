@@ -1,5 +1,37 @@
 
+url:
 https://macos-defaults.com/finder/nstableviewdefaultsizemode.html
+
+
+Flash clock time separators 顶栏时间分隔符闪烁
+When enabled, the clock indicator (which by default is the colon) will flash on and off each second.
+defaults write com.apple.menuextra.clock "FlashDateSeparators" -bool "false" && killall SystemUIServer
+
+
+Only show opened apps in Dock
+defaults write com.apple.dock static-only -bool false
+
+
+
+Choose whether to autogather large files when submitting a feedback report.
+defaults write com.apple.appleseed.FeedbackAssistant Autogather -bool false;
+
+
+Add additional counterpart suffixes that Xcode should consider in the "Related Items > Counterparts" menu.
+defaults write com.apple.dt.Xcode "IDEAdditionalCounterpartSuffixes" -array-add "ViewModel" "View" && killall Xcode;
+defaults write com.apple.dt.Xcode "IDEAdditionalCounterpartSuffixes" -array-add "Router" "Interactor" "Builder" && killall Xcode;
+
+
+Show build durations in the Activity Viewer in Xcode's toolbar at the top of the workspace window.
+defaults write com.apple.dt.Xcode "ShowBuildOperationDuration" -bool "true" && killall Xcode;
+
+
+
+Set default location for Simulator screenshots.
+Note that the folder has to exist in the filesystem.
+defaults write com.apple.iphonesimulator "ScreenShotSaveLocation" -string "~/Pictures/Screenshots" 
+
+
 
 # Finder > Preferences > General
 # Show all filename extensions 
@@ -159,7 +191,7 @@ Animations
 
 Behaviour
 
-    defaults write com.apple.finder AppleShowAllFiles -bool true
+    
     defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 
 Alerts
@@ -484,15 +516,22 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 
 
 
+显示桌面的图标
+defaults write com.apple.finder "CreateDesktop" -bool "true" && killall Finder
 
 
+在桌面排序中保持文件夹在前
+defaults write com.apple.finder "_FXSortFoldersFirstOnDesktop" -bool "true" && killall Finder
 
 
 # 访达 - 显示退出菜单项 = OFF
 % defaults write com.apple.finder QuitMenuItem -bool false;
 # 访达 - 显示窗口标题栏图标 = OFF
+Always show folder icon before title in the title bar
+This command requires to grant full disk access to the terminal (System Preferences → Security & Privacy → Full Disk Access)
 % defaults write com.apple.universalaccess showWindowTitlebarIcons -bool false;
 # 访达 - 窗口标题栏图标显示延迟 = 0
+Choose the delay of the auto-hidden document-proxy icon.
 % defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0;
 # 访达 - 新文档默认保存到云存储 = OFF
 % defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false;

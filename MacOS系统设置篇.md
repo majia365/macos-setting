@@ -2,8 +2,6 @@
 MacOSX装机：0x0系统设置篇
 ========================
 
-_Github Markdown basic_ https://docs.github.com/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax
-
 
 [toc]
 
@@ -48,11 +46,16 @@ then:
 
 ```
 [通用]
-外观 = 深色
-高亮显示颜色 = 蓝色
+# 外观 = 深色
+% defaults write NSGlobalDomain AppleInterfaceStyle -string Dark;
+# 强调色 = 蓝色
+% defaults write NSGlobalDomain AppleAccentColor -int 4;
+# 高亮显示颜色 = 蓝色
+% defaults write NSGlobalDomain AppleHighlightColor -string "0.698039 0.843137 1.000000 Blue";
 边栏图标大小 = 小
 允许基于墙纸调整窗口色调 = ON
-显示滚动条 = 始终
+# 显示滚动条 = 始终
+% defaults write NSGlobalDomain AppleShowScrollBars -string Always;
 在滚动条中点按 = 跳至下一页
 默认网页浏览器 = Safari
 首选以标签页方式打开文稿 = 永不
@@ -114,13 +117,13 @@ Hot corners Possible values:
 
 ```
 [程序坞与菜单栏]
-# 大小
+# 大小（default value 48）
 % defaults write com.apple.dock tilesize -int 48;
 放大 = OFF
 % defaults write com.apple.dock largesize -int 64;
-# 置于屏幕上的位置 = 右边
+# 置于屏幕上的位置 = 右边（取值：left/bottom/right）
 % defaults write com.apple.dock orientation -string right;
-# 最小化窗口时使用 = 缩放效果
+# 最小化窗口时使用 = 缩放效果（取值：genie/scale/suck）
 % defaults write com.apple.dock mineffect -string scale;
 连按窗口标题栏以 = 缩放
 将窗口最小化为应用程序图标 = OFF
@@ -133,20 +136,55 @@ Hot corners Possible values:
 # 在程序坞中显示最近使用的应用程序 = OFF
 % defaults write com.apple.dock show-recents -bool false;
 自动隐藏和显示菜单栏 = OFF
+# 控制中心 - Wi-Fi
+在菜单栏中显示 = ON
+# 控制中心 - 蓝牙
+在菜单栏中显示 = OFF
+# 控制中心 - 隔空投送
+在菜单栏中显示 = OFF
+# 控制中心 - 勿扰模式
+在菜单栏中显示 = ON
+在菜单栏中显示 = 始终
+# 控制中心 - 键盘亮度
+在菜单栏中显示 = OFF
+# 控制中心 - 屏幕镜像
+在菜单栏中显示 = ON
+在菜单栏中显示 = 活跃时
+# 控制中心 - 显示器
+在菜单栏中显示 = OFF
+# 控制中心 - 声音
+在菜单栏中显示 = ON
+在菜单栏中显示 = 始终
+# 控制中心 - 播放中
+在菜单栏中显示 = OFF
+# 其他模块 - 辅助功能快捷键
+在菜单栏中显示 = OFF
+在控制中心中显示 = OFF
 # 其他模块 - 电池
 在菜单栏中显示 = ON
 在控制中心中显示 = OFF
 # 显示百分比 = OFF
 % defaults write com.apple.menuextra.battery ShowPercent -string "NO";
-# 其他模块 - 时钟
+# 其他模块 - 快速用户切换
+在菜单栏中显示 = OFF
+在控制中心中显示 = OFF
+# 仅菜单栏 - 时钟
 # 显示星期 = ON
 # 显示日期 = ON
 % defaults write com.apple.menuextra.clock DateFormat -string "EEE d MMM H:mm";
 时间选项 = 数码
 # 使用24小时格式时钟
 % defaults write com.apple.menuextra.clock Show24Hour -bool true;
+显示上午/下午 = OFF
 闪动时间分隔符 = OFF
 在时间中显示秒钟 = OFF
+语音报时 = OFF
+# 仅菜单栏 - 聚焦
+在菜单栏中显示 = OFF
+# 仅菜单栏 - Siri
+在菜单栏中显示 = OFF
+# 仅菜单栏 - 时间机器
+在菜单栏中显示 = OFF
 % killall Dock;
 ```
 
@@ -161,7 +199,8 @@ Hot corners Possible values:
 
 ```
 [调度中心]
-根据最近的使用情况自动重新排列空间 = OFF
+#根据最近的使用情况自动重新排列空间 = OFF
+% defaults write com.apple.dock mru-spaces -bool false;
 切换到某个应用程序时，会切换到包含该应用程序的打开窗口的空间 = ON
 使窗口按应用程序成组 = OFF
 显示器具有单独的空间 = ON
@@ -169,6 +208,7 @@ Hot corners Possible values:
 调度中心 = Ctl+上
 应用程序窗口 = Ctl+下
 显示桌面 = F11
+killall Dock;
 ```
 
 ### Siri ### 
@@ -369,32 +409,31 @@ Wi-Fi网络 = ON
 
 ```
 # softwareupdate 相关
-
 # 列出可用的软件更新
-softwareupdate --list
+> softwareupdate --list
 # 安装指定的软件更新
-sudo softwareupdate --install Apple-1.5.2;
+> sudo softwareupdate --install Apple-1.5.2;
 # 安装所有可用的软件更新
-sudo softwareupdate -ia
+> sudo softwareupdate -ia
 # 安装所有推荐的软件更新
-sudo softwareupdate -ir
+> sudo softwareupdate -ir
 # 如果安装后要求重启
-sudo shutdown -r now
+> sudo shutdown -r now
 
 # 检查可用的macOS安装包
-softwareupdate --list-full-installers
+> softwareupdate --list-full-installers
 Title: macOS Ventura, Version: 13.5, Size: 11934300398K
 Title: macOS Monterey, Version: 12.6.8, Size: 12409936411K
 Title: macOS Big Sur, Version: 11.7.9, Size: 12416731958K
 # 下载最新推荐的macOS安装包
-softwareupdate --fetch-full-installer
+> softwareupdate --fetch-full-installer
 # 下载指定版本的macOS安装包
-softwareupdate --fetch-full-installer --full-installer-version 10.15;
+> softwareupdate --fetch-full-installer --full-installer-version 10.15;
 
 # 检查更新开关状态
-softwareupdate --schedule
+> softwareupdate --schedule
 # 设置更新开关状态
-softwareupdate --schedule on/off
+> softwareupdate --schedule on/off
 ```
 
 ### 网络 ### 
@@ -510,21 +549,6 @@ Command键 = Cmd
 显示繁体字符及生僻字符 = OFF
 ; 听写
 听写 = 关闭
-```
-
-```
-# 截屏相关
-# 截屏 - 截屏时显示缩略图 = ON
-% defaults write com.apple.screencapture show-thumbnail -bool true;
-# 截屏 - 截屏文件保存位置 = ${HOME}/Downloads
-% defaults write com.apple.screencapture location "${HOME}/Downloads";
-# 截屏 - 截屏文件格式 = png
-% defaults write com.apple.screencapture type -string png;
-# 截屏 - 截屏无阴影 = ON
-% defaults write com.apple.screencapture disable-shadow -bool true;
-# 截屏 - 截屏文件名包含日期时间 = OFF
-% defaults write com.apple.screencapture include-date -bool false;
-% killall SystemUIServer
 ```
 
 ### 触控板 ### 
@@ -714,14 +738,14 @@ Bonjour电脑 = ON
 # 30天后移除废纸篓中的项目 = ON
 % defaults write com.apple.finder FXRemoveOldTrashItems -bool true;
 # 文件夹保持在顶部 = ON
-; defaults write com.apple.finder _FXSortFoldersFirst -bool true;
+% defaults write com.apple.finder _FXSortFoldersFirst -bool true;
 # 执行搜索时 = 搜索当前文件夹 {SCev:这台Mac; SCcf:当前文件夹; SCsp:上次的搜索范围}
 % defaults write com.apple.finder FXDefaultSearchScope -string SCcf;
-killall Finder;
+% killall Finder;
 ```
 
 ```
-; 访达 - 显示
+; 访达 - 显示菜单
 # 显示为列表 {icnv:图标; Nlsv:列表; clmv:分栏; glyv:画廊}
 % defaults write com.apple.finder FXPreferredViewStyle -string Nlsv;
 使用群组 = OFF
@@ -749,19 +773,32 @@ killall Finder;
 计算所有大小 = OFF
 显示图标预览 = OFF
 显示资源库文件夹 = OFF
-killall Finder;
+% killall Finder;
 ```
 
 ```
-[AppStore-偏好设置]
+# 访达相关
+# 显示退出菜单项
+% defaults write com.apple.finder QuitMenuItem -bool true;
+# 显示隐藏文件 = OFF
+% defaults write com.apple.finder AppleShowAllFiles -bool flase;
+% killall Finder;
+```
+
+### AppStore ###
+
+```
+[AppStore - 偏好设置]
 自动更新 = OFF
 自动下载 = OFF
 视频自动播放 = OFF
 App内评分及评论 = OFF
 ```
 
+### Safari浏览器 ###
+
 ```
-[Safari浏览器-偏好设置]
+[Safari浏览器 - 偏好设置]
 ; 通用
 浏览器打开方式 = 新建窗口
 新窗口打开方式 = 个人收藏
@@ -831,10 +868,13 @@ Ghostery Lite
 停用插件以节能 = ON
 默认编码 = Unicode(UTF-8)
 在菜单栏中显示开发菜单 = ON
+% killall Safari;
 ```
 
+### 邮件 ###
+
 ```
-[邮件-偏好设置]
+[邮件 - 偏好设置]
 ; 通用
 默认的电子邮件阅读程序 = 邮件.app
 检查新邮件 = 每小时
@@ -889,8 +929,10 @@ Ghostery Lite
 在回复或转发中引用文本时 = 包括所有原始邮件文本
 ```
 
+### 通讯录 ###
+
 ```
-[通讯录-偏好设置]
+[通讯录 - 偏好设置]
 ; 通用
 英文姓名显示顺序 = 名，姓
 排序方式 = 姓氏
@@ -909,8 +951,10 @@ vCard格式 = 3.0
 导出vCard中的照片 = OFF
 ```
 
+### 日历 ###
+
 ```
-[日历-偏好设置]
+[日历 - 偏好设置]
 ; 通用
 默认日历App = 日历.app
 每周天数 = 7
@@ -932,14 +976,18 @@ vCard格式 = 3.0
 ; 高级-OFF
 ```
 
+### 提醒事项 ###
+
 ```
-[提醒事项-偏好设置]
+[提醒事项 - 偏好设置]
 全天提醒事项 = 今天7点通知
 将全天提醒事项显示为逾期 = ON
 ```
 
+### 备忘录 ###
+
 ```
-[备忘录-偏好设置]
+[备忘录 - 偏好设置]
 备忘录排序方式 = 标题
 新备忘录开头格式 = 标题
 默认帐户 = iCloud
@@ -950,16 +998,20 @@ vCard格式 = 3.0
 编辑::替换 = OFF
 ```
 
+### FaceTime通话 ###
+
 ```
-[FaceTime通话-偏好设置]
+[FaceTime通话 - 偏好设置]
 启用这个帐户 = ON
 通过以下地址可与您进行FaceTime通话 = +86
 来自iPhone的呼叫 = ON
 允许在视频通话期间捕捉实况照片 = OFF
 ```
 
+### 信息 ###
+
 ```
-[信息-偏好设置]
+[信息 - 偏好设置]
 ; 通用
 保留信息 = 永久
 关闭对话时存储历史记录 = ON
@@ -974,8 +1026,10 @@ vCard格式 = 3.0
 发送已读回执 = OFF
 ```
 
+### 照片 ###
+
 ```
-[照片-偏好设置]
+[照片 - 偏好设置]
 ; 通用
 显示节日事件 = OFF
 显示回忆通知 = OFF
@@ -988,8 +1042,10 @@ iCloud照片 = ON
 共享的相簿 = OFF
 ```
 
+### 预览 ###
+
 ```
-[预览-偏好设置]
+[预览 - 偏好设置]
 ; 图像
 在同一窗口中打开一组文件 = ON
 一个图像像素等于一个屏幕像素 = ON
@@ -1001,8 +1057,10 @@ iCloud照片 = ON
 将姓名添加到注解 = OFF
 ```
 
+### 终端 ###
+
 ```
-[终端-偏好设置]
+[终端 - 偏好设置]
 ; 通用
 使用描述文件新建窗口 = Homebrew
 Shell的打开方式 = /bin/zsh
@@ -1037,20 +1095,81 @@ Shell的打开方式 = /bin/zsh
 ; 编码
 ```
 
+### 文本编辑 ###
+
 ```
-[文本编辑-偏好设置]
-格式 = 纯文本
-选项 = OFF
-HTML文件显示为HTML代码 = ON
-RTF文件显示为RTF代码 = OFF
-.txt扩展名 = OFF
-纯文本文件编码 = UTF-8
+[文本编辑 - 偏好设置]
+# 格式 = 纯文本
+% defaults write com.apple.TextEdit RichText -bool false;
+# 按页面换行 = OFF
+% defaults write com.apple.TextEdit ShowPageBreaks -bool false;
+; 选项
+# 键入时检查拼写 = OFF
+% defaults write com.apple.TextEdit CheckSpellingWhileTyping -bool false;
+# 检查拼写和语法 = OFF
+% defaults write com.apple.TextEdit CheckGrammarWithSpelling -bool false;
+# 自动纠正拼写 = OFF
+% defaults write com.apple.TextEdit CorrectSpellingAutomatically -bool false;
+# 显示标尺 = OFF
+% defaults write com.apple.TextEdit ShowRuler -bool false;
+# 数据检测器 = OFF
+% defaults write com.apple.TextEdit DataDetectors -bool false;
+# 仅在多信息文本文稿中使用智能引号和破折号 = OFF
+% defaults write com.apple.TextEdit SmartSubstitutionsEnabledInRichTextOnly -bool false;
+# 智能拷贝粘贴 = OFF
+% defaults write com.apple.TextEdit SmartCopyPaste -bool false;
+# 智能引号 = OFF
+% defaults write com.apple.TextEdit SmartQuotes -bool false;
+# 智能破折号 = OFF
+% defaults write com.apple.TextEdit SmartDashes -bool false;
+# 智能链接 = OFF
+% defaults write com.apple.TextEdit SmartLinks -bool false;
+# 文本替换 = OFF
+% defaults write com.apple.TextEdit TextReplacement -bool false;
+; 打开和存储
+# HTML文件显示为HTML代码 = ON
+% defaults write com.apple.TextEdit IgnoreHTML -bool true;
+# RTF文件显示为RTF代码 = OFF
+% defaults write com.apple.TextEdit IgnoreRichText -bool true;
+# 给纯文本文件添加.txt扩展名 = ON
+% defaults write com.apple.TextEdit AddExtensionToNewPlainTextFiles -bool false;
+# 纯文本文件打开/存储编码 = UTF-8
+% defaults write com.apple.TextEdit PlainTextEncoding -int 4;
+% defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4;
+HTML存储文稿类型 = HTML 4.01 Strict
+HTML存储样式化 = 嵌入式CSS
+HTML存储编码 = UTF-8
+# HTML存储保留空白区域 = ON
+% defaults write com.apple.TextEdit PreserveWhitespace -bool true;
+% killall TextEdit;
 ```
+
+```
+# 文本编辑 - 其他
+# 默认保存位置 = 文稿
+% defaults write com.apple.TextEdit NSNavLastRootDirectory -string "~/Documents";
+% killall TextEdit;
+```
+
 
 ## 系统优化设置 ##
 
 
-```
+### 截屏相关 ###
 
 ```
+# 截屏相关
+# 截屏 - 截屏文件保存位置 = ${HOME}/Downloads
+% defaults write com.apple.screencapture location "${HOME}/Downloads";
+# 截屏 - 截屏文件格式 = png
+% defaults write com.apple.screencapture type -string png;
+# 截屏 - 截屏时显示缩略图 = ON
+% defaults write com.apple.screencapture show-thumbnail -bool true;
+# 截屏 - 截屏无阴影 = ON
+% defaults write com.apple.screencapture disable-shadow -bool true;
+# 截屏 - 截屏文件名包含日期时间 = OFF
+% defaults write com.apple.screencapture include-date -bool false;
+% killall SystemUIServer;
+```
+
 
