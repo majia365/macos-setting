@@ -21,12 +21,6 @@ defaults write com.apple.dock "enable-spring-load-actions-on-all-items" -bool "f
 
 
 
-
-Flash clock time separators 顶栏时间分隔符闪烁
-When enabled, the clock indicator (which by default is the colon) will flash on and off each second.
-defaults write com.apple.menuextra.clock "FlashDateSeparators" -bool "false" && killall SystemUIServer
-
-
 Only show opened apps in Dock
 defaults write com.apple.dock static-only -bool false
 
@@ -52,20 +46,6 @@ defaults write com.apple.iphonesimulator "ScreenShotSaveLocation" -string "~/Pic
 
 
 
-# Finder > Preferences > General
-# Show all filename extensions 
-defaults write NSGlobalDomain AppleShowAllExtensions -bool true
-
-# Finder > Preferences > General
-# Show these items on ~/Desktop
-defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool true
-defaults write com.apple.finder ShowHardDrivesOnDesktop -bool false
-defaults write com.apple.finder ShowRemovableMediaOnDesktop -bool false
-
-# Finder > Preferences > General
-# Show $HOME when opening new Finder windows
-defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}"
-
 # Finder > Preferences > Sidebar
 # Show these items in Finder sidebar
 # defaults write com.apple.finder ShowRecentTags -bool false
@@ -73,9 +53,6 @@ defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}"
 # defaults write com.apple.finder SidebarShowingSignedIntoiCloud -bool true
 # defaults write com.apple.finder SidebarShowingiCloudDesktop -bool false
 
-# Finder > Show view options
-# Always default to column view
-defaults write com.apple.Finder FXPreferredViewStyle -string "clmv"
 
 # Finder > Show view options
 # Arrange by kind
@@ -109,30 +86,11 @@ defaults write com.apple.Safari ShowFavoritesBar -bool false
 # Enforces 24 hour time across all timestamps and clocks
 defaults write -g AppleICUForce24HourTime -bool true
 
-# System Preferences > Dock & Menu Bar > Dock size
-# Set the dock size to small
-defaults write com.apple.dock tilesize -int 42
-
-# System Preferences > Dock & Menu Bar > Dock
-# Set dock to hide/show automatically
-defaults write com.apple.dock autohide -bool true
-
-# System Preferences > Dock & Menu Bar > Dock
-# Set the dock on the left side of the display
-defaults write com.apple.dock orientation -string "left"
-
-# System Preferences > Dock & Menu Bar > Dock
-# Set dock to not display recent apps
-defaults write com.apple.dock show-recents -bool false
 
 # System Preferences > Dock & Menu Bar > Menu Bar
 # Automatically hide/show Menu Bar
 defaults write -g _HIHideMenuBar -bool true
 
-# System Preferences > Security & Privacy > General
-# Require password immediately after sleep or screensaver
-defaults write com.apple.screensaver askForPassword -int 1
-defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # System Preferences > Security & Privacy > Firewall
 # Turn firewall on
@@ -707,18 +665,15 @@ defaults write com.apple.finder CreateDesktop -bool false;
 killall Finder;
 
 
-sudo defaults write /Library/Preferences/com.apple.loginwindow AdminHostInfo HostName;
+sudo defaults write com.apple.loginwindow AdminHostInfo HostName;
+/Library/Preferences/
 
-# SSD 开启 TRIM 支持
-sudo trimforce enable
-
-# APP安装开启任何来源
-sudo spctl --master-disable
 
 # 关闭SIP
 csrutil disable
 # 查看SIP状态
 csrutil status
+
 
 #网络层端口转发
 由于低级端口，如80/443等缺省服务端口需要root用户才能使用，故通过端口转发，由普通用户程序绑定高级8xxx端口。
@@ -733,8 +688,9 @@ sudo pfctl -e
 
 
 
-
+禁用仪表盘
 defaults write com.apple.dashboard mcx-disabled -boolean YES
+
 
 
 $ 电源管理（pmset）
@@ -792,6 +748,7 @@ sudo pmset -a sms 1
 #sudo pmset -c 2 -b 1 -u 1
 
 
+
 % nvram -p
 LocationServicesEnabled	%01
 fmm-computer-name	ZhongMBA
@@ -802,8 +759,6 @@ SystemAudioVolume	%80
 ;EnableTRIM	%01
 ;backlight-level	M%00
 ;StartupMute	%01
-
-sudo trimforce enable/disable
 
 
 

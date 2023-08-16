@@ -125,8 +125,8 @@ Hot corners Possible values:
 % defaults write com.apple.dock orientation -string right;
 # 最小化窗口时使用 = 缩放效果（取值：genie/scale/suck）
 % defaults write com.apple.dock mineffect -string scale;
-连按窗口标题栏以 = 缩放（Minimize:最小化/Maximize:缩放）
-defaults write NSGlobalDomain AppleActionOnDoubleClick -string Maximize;
+# 连按窗口标题栏以 = 缩放（Minimize:最小化/Maximize:缩放）
+% defaults write NSGlobalDomain AppleActionOnDoubleClick -string Maximize;
 将窗口最小化为应用程序图标 = OFF
 弹跳打开应用程序 = ON
 # 自动显示和隐藏程序坞 = OFF
@@ -171,14 +171,19 @@ defaults write NSGlobalDomain AppleActionOnDoubleClick -string Maximize;
 在控制中心中显示 = OFF
 # 仅菜单栏 - 时钟
 # 显示星期 = ON
+% defaults write com.apple.menuextra.clock ShowDayOfWeek -bool true;
 # 显示日期 = ON
-% defaults write com.apple.menuextra.clock DateFormat -string "EEE d MMM H:mm";
-时间选项 = 数码
+% defaults write com.apple.menuextra.clock ShowDayOfMonth -bool true;
+% defaults write com.apple.menuextra.clock DateFormat -string "EEE d MMM HH:mm";
+# 时间选项 = 数码
+% defaults write com.apple.menuextra.clock IsAnalog -bool false;
 # 使用24小时格式时钟
 % defaults write com.apple.menuextra.clock Show24Hour -bool true;
 显示上午/下午 = OFF
-闪动时间分隔符 = OFF
-在时间中显示秒钟 = OFF
+# 闪动时间分隔符 = OFF
+% defaults write com.apple.menuextra.clock FlashDateSeparators -bool false;
+# 在时间中显示秒钟 = OFF
+% defaults write com.apple.menuextra.clock ShowSeconds -bool false;
 语音报时 = OFF
 # 仅菜单栏 - 聚焦
 在菜单栏中显示 = OFF
@@ -186,6 +191,7 @@ defaults write NSGlobalDomain AppleActionOnDoubleClick -string Maximize;
 在菜单栏中显示 = OFF
 # 仅菜单栏 - 时间机器
 在菜单栏中显示 = OFF
+% killall SystemUIServer;
 % killall Dock;
 ```
 
@@ -405,30 +411,30 @@ Wi-Fi网络 = ON
 ```
 # softwareupdate 相关
 # 列出可用的软件更新
-> softwareupdate --list
+softwareupdate --list
 # 安装指定的软件更新
-> sudo softwareupdate --install Apple-1.5.2;
+sudo softwareupdate --install Apple-1.5.2;
 # 安装所有可用的软件更新
-> sudo softwareupdate -ia
+sudo softwareupdate -ia
 # 安装所有推荐的软件更新
-> sudo softwareupdate -ir
+sudo softwareupdate -ir
 # 如果安装后要求重启
-> sudo shutdown -r now
+sudo shutdown -r now
 
 # 检查可用的macOS安装包
-> softwareupdate --list-full-installers
+softwareupdate --list-full-installers
 Title: macOS Ventura, Version: 13.5, Size: 11934300398K
 Title: macOS Monterey, Version: 12.6.8, Size: 12409936411K
 Title: macOS Big Sur, Version: 11.7.9, Size: 12416731958K
 # 下载最新推荐的macOS安装包
-> softwareupdate --fetch-full-installer
+softwareupdate --fetch-full-installer
 # 下载指定版本的macOS安装包
-> softwareupdate --fetch-full-installer --full-installer-version 10.15;
+softwareupdate --fetch-full-installer --full-installer-version 10.15;
 
 # 检查更新开关状态
-> softwareupdate --schedule
+softwareupdate --schedule
 # 设置更新开关状态
-> softwareupdate --schedule on/off
+softwareupdate --schedule on/off
 ```
 
 ### 网络 ### 
@@ -514,7 +520,7 @@ Command键 = Cmd
 % defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false;
 双引号样式 = "abc"
 单引号样式 = 'abc'
-? defaults read NSGlobalDomain NSUserQuotesArray 
+defaults read NSGlobalDomain NSUserQuotesArray 
 (
     "\\"",
     "\\"",
@@ -550,7 +556,7 @@ Command键 = Cmd
 在菜单栏中显示输入法菜单 = ON
 使用中英键切换ABC输入法 = ON
 自动切换到文稿的输入法 = OFF
-; 输入法-简体拼音
+; 输入法 - 简体拼音
 候选字窗口方向 = 水平
 候选字窗口字体大小 = 16
 显示联想词语 = ON
@@ -683,6 +689,12 @@ Command键 = Cmd
 允许电池供电时进行备份 = OFF
 ```
 
+```
+# 时间机器其他
+# 时间机器 - 连接新磁盘时不询问是否作为备份卷 = ON
+% defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true;
+```
+
 ### 启动磁盘 ### 
 
 ```
@@ -759,7 +771,7 @@ Bonjour电脑 = ON
 ```
 
 ```
-; 访达 - 显示菜单
+[访达 - 显示菜单]
 # 显示为列表 {icnv:图标; Nlsv:列表; clmv:分栏; glyv:画廊}
 % defaults write com.apple.finder FXPreferredViewStyle -string Nlsv;
 使用群组 = OFF
@@ -771,11 +783,11 @@ Bonjour电脑 = ON
 显示所有标签页 = OFF
 # 显示标签页栏 = OFF
 % defaults write com.apple.finder ShowTabView -bool flase;
-# 访达 - 显示路径栏 = ON
+# 显示路径栏 = ON
 % defaults write com.apple.finder ShowPathbar -bool true;
-# 访达 - 显示状态栏 = OFF
+# 显示状态栏 = OFF
 % defaults write com.apple.finder ShowStatusBar -bool false;
-; 访达 - 显示选项
+; 显示选项
 始终以列表视图打开 = ON
 以列表视图浏览 = ON
 分组方式 = 无
@@ -1087,7 +1099,7 @@ iCloud照片 = ON
 ; 描述文件
 # 默认 = Homebrew
 % defaults write com.apple.Terminal "Default Window Settings" -string Homebrew;
-; 描述文件-文本
+; 描述文件 - 文本
 defaults read com.apple.Terminal "Window Settings" −dict "Homebrew"
 # 平滑文本 = OFF
 FontAntialias = 0;
@@ -1095,7 +1107,7 @@ FontAntialias = 0;
 CursorType = 0;
 # 闪动光标 = ON
 CursorBlink = 1; 
-; 描述文件-窗口
+; 描述文件 - 窗口
 标题 = 工作路径或文稿/路径/活跃进程名称
 ShowRepresentedURLPathInTitle = 1;
 活跃进程名称 = ON
@@ -1116,23 +1128,23 @@ ScrollbackLines = 10000;
 恢复的行数限制 = 10000
 在恢复的文本后插入书签 = OFF
 在程序坞中显示状态和当前内容 = OFF
-; 描述文件-标签页
+; 描述文件 - 标签页
 标题 = 工作路径或文稿/路径/活跃进程名称
 ShowActiveProcessArgumentsInTabTitle = 0;
 ShowTTYNameInTabTitle = 0;
 有自定标题时显示其他项目 = OFF
 显示活动指示器 = ON
-; 描述文件-Shell
+; 描述文件 - Shell
 # 当Shell退出时 = 关闭窗口（0:关闭窗口/1:当shell完全退出后关闭/2:不关闭窗口）
 shellExitAction = 0;
 关闭之前先询问 = 1（2:始终/0:永不/1:仅当有进程）
 warnOnShellCloseAction = 1;
 不是登录Shell和以下项目时 = screen/tmux
-; 描述文件-键盘
+; 描述文件 - 键盘
 将Option键用作Meta键 = OFF
 # 滚动备用屏幕 = OFF
 ScrollAlternateScreen = 0;
-; 描述文件-高级
+; 描述文件 - 高级
 声明终端为 = xterm
 TerminalType = xterm;
 文本编码 = Unicode(UTF-8)
@@ -1153,11 +1165,20 @@ defaults read com.apple.Terminal StringEncodings;
     2147485233,
     2147486211
 )
+% killall Terminal;
 ```
 
 ```
+[终端 - 终端菜单]
 # 安全键盘输入 = OFF
 % defaults write com.apple.Terminal SecureKeyboardEntry -bool false;
+% killall Terminal;
+```
+
+```
+# 终端相关
+# 焦点跟随鼠标光标到达任何终端窗口 = ON
+% defaults write com.apple.Terminal FocusFollowsMouse -bool true;
 % killall Terminal;
 ```
 
@@ -1211,16 +1232,16 @@ HTML存储编码 = UTF-8
 ```
 
 ```
-# 文本编辑 - 其他
+# 文本编辑相关
 # 默认保存位置 = 文稿
 % defaults write com.apple.TextEdit NSNavLastRootDirectory -string "~/Documents";
 % killall TextEdit;
 ```
 
-### 终端监视器 ###
+### 活动监视器 ###
 
 ```
-[终端监视器 - 偏好设置]
+[活动监视器 - 偏好设置]
 ; 显示
 # 程序坞图标 = 显示应用程序图标（5:显示CPU使用率/6:显示CPU历史记录/2:显示网络使用率/3:显示硬盘活动/0:显示应用程序图标）
 % defaults write com.apple.ActivityMonitor IconType -int 0;
@@ -1260,7 +1281,6 @@ HTML存储编码 = UTF-8
 ## 系统优化设置 ##
 
 
-
 ### 启动台相关 ###
 
 ```
@@ -1288,23 +1308,6 @@ HTML存储编码 = UTF-8
 % killall SystemUIServer;
 ```
 
-### 终端相关 ###
-
-```
-# 终端相关
-# 焦点跟随鼠标光标到达任何终端窗口 = ON
-% defaults write com.apple.Terminal FocusFollowsMouse -bool true;
-% killall Terminal;
-```
-
-### 时间机器相关 ###
-
-```
-# 时间机器相关
-# 时间机器 - 连接新磁盘时不询问是否作为备份卷 = ON
-% defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true;
-```
-
 ### 磁盘相关 ###
 
 ```
@@ -1312,6 +1315,8 @@ HTML存储编码 = UTF-8
 # 不生成.DS_Store文件夹
 % defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true;
 % defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true;
+# 打开/关闭SSD磁盘Trim功能
+sudo trimforce enable/disable
 ```
 
 ### 安全相关 ###
@@ -1321,4 +1326,3 @@ HTML存储编码 = UTF-8
 # 提示从Internet下载的应用程序 = OFF
 % defaults write com.apple.LaunchServices LSQuarantine -bool false;
 ```
-
