@@ -38,14 +38,15 @@ def md2sh(infile, outfile=""):
                     #print_trace(line)
                     if line=="": continue
                     # patch: last execute command about kill terminal or reboot
-                    if line.startswith("% killall Terminal") and endline=="":
-                        endline = "killall Terminal;\n"
+                    if line.startswith("% killall Terminal"):
+                        if endline=="":
+                            endline = "killall Terminal;\n"
                         continue
-                    if line.startswith("% sudo shutdown"):
+                    elif line.startswith("% sudo shutdown"):
                         endline = "sudo shutdown -r now;\n"
                         continue
                     # add code line
-                    if line.startswith("% "):
+                    elif line.startswith("% "):
                         #print_trace(line)
                         codelines.append(line[2:] + "\n")
         # patch: last execute command about kill terminal or reboot
