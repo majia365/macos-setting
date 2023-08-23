@@ -8,10 +8,15 @@ sudo scutil —-set HostName zhongmba
 sudo scutil --set ComputerName ZhongMBA
 # Apple ID
 # 通用
+defaults delete NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically;
 defaults write NSGlobalDomain AppleInterfaceStyle -string Dark;
 defaults write NSGlobalDomain AppleAccentColor -int 4;
 defaults write NSGlobalDomain AppleHighlightColor -string "0.698039 0.843137 1.000000 Blue";
+defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2;
+defaults write NSGlobalDomain AppleReduceDesktopTinting -bool false;
 defaults write NSGlobalDomain AppleShowScrollBars -string Always;
+defaults -currentHost write com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
+defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
 # 桌面与屏幕保护程序
 defaults write com.apple.dock wvous-br-corner -int 13;
 defaults write com.apple.dock wvous-br-modifier -int 0;
@@ -55,6 +60,21 @@ defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true;
 # 互联网帐户
 # 触控ID
 # 用户与群组
+sudo defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser
+sudo defaults write /Library/Preferences/com.apple.loginwindow SHOWFULLNAME -bool true;
+sudo defaults write /Library/Preferences/com.apple.loginwindow PowerOffDisabled -bool false;
+sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool false;
+sudo defaults write /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 3;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add closeViewHotkeysEnabled 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add closeViewScrollWheelToggle 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add closeViewTrackpadGestureZoomEnabled 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add mouseDriver 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add slowKey 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add stickyKey 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add switchOnOffKey 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add virtualKeyboardOnOff 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add voiceOverOnOffKey 0;
+sudo defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false;
 # 辅助功能
 # 屏幕使用时间
 # 扩展
@@ -69,8 +89,7 @@ softwareupdate --schedule on
 # 蓝牙
 # 声音
 sudo nvram StartupMute=％00
-sudo nvram StartupMute=％01
-defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -int 0;
+defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false;
 # 打印机与扫描仪
 # 键盘
 defaults write NSGlobalDomain com.apple.keyboard.fnState -bool true;
@@ -128,8 +147,11 @@ defaults write com.apple.finder QuitMenuItem -bool true;
 defaults write com.apple.finder AppleShowAllFiles -bool flase;
 killall Finder;
 # AppStore
+defaults write com.apple.appstore AutoPlayVideoSetting -string off;
+defaults write com.apple.appstore InAppReviewEnabled -bool false;
 # Safari浏览器
 defaults write com.apple.safari ShowFullURLInSmartSearchField -bool true;
+defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true;
 killall Safari;
 # 邮件
 # 通讯录
@@ -190,6 +212,7 @@ killall Dock;
 # 截屏相关
 defaults write com.apple.screencapture location "${HOME}/Downloads";
 defaults write com.apple.screencapture type -string png;
+defaults write com.apple.screencapture name "ScreenShot";
 defaults write com.apple.screencapture show-thumbnail -bool true;
 defaults write com.apple.screencapture disable-shadow -bool true;
 defaults write com.apple.screencapture include-date -bool false;

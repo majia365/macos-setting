@@ -47,13 +47,19 @@ then:
 ```
 [通用]
 # 外观 = 深色
+% defaults delete NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically;
 % defaults write NSGlobalDomain AppleInterfaceStyle -string Dark;
+# 外观 = 自动
+defaults delete NSGlobalDomain AppleInterfaceStyle;
+defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool true;
 # 强调色 = 蓝色
 % defaults write NSGlobalDomain AppleAccentColor -int 4;
 # 高亮显示颜色 = 蓝色
 % defaults write NSGlobalDomain AppleHighlightColor -string "0.698039 0.843137 1.000000 Blue";
-边栏图标大小 = 小
-允许基于墙纸调整窗口色调 = ON
+# 边栏图标大小 = 中（1:小/2:中/3:大）
+% defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2;
+# 允许基于墙纸调整窗口色调 = ON
+% defaults write NSGlobalDomain AppleReduceDesktopTinting -bool false;
 # 显示滚动条 = 始终
 % defaults write NSGlobalDomain AppleShowScrollBars -string Always;
 在滚动条中点按 = 跳至下一页
@@ -62,11 +68,13 @@ then:
 关闭文稿时要求保存更改 = OFF
 退出App时关闭窗口 = ON
 最近使用的项目 = 5
-允许使用接力 = OFF
+# 允许使用接力 = OFF
+% defaults -currentHost write com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
+% defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
+~~~
+使用平滑字体 = ON
+自动隐藏和显示菜单栏 = OFF
 ```
-
-~~使用平滑字体 = ON~~
-~~自动隐藏和显示菜单栏 = OFF~~
 
 ### 桌面与屏幕保护程序 ###
 
@@ -232,9 +240,9 @@ Siri建议 = OFF
 日程与提醒事项 = OFF
 ; 隐私
 防止聚焦搜索这些位置 = bt/xfile
+~~~
+允许在查询结果中包含聚焦建议 = OFF
 ```
-
-~~允许在查询结果中包含聚焦建议 = OFF~~
 
 ### 语言与地区 ### 
 
@@ -317,20 +325,34 @@ iTunes Store = ON
 ```
 [用户与群组]
 ; 登录选项
-自动登录 = 关闭
-将登陆窗口显示为 = 名称和密码
-显示睡眠重新启动和关机按钮 = ON
+# 自动登录 = 关闭
+% sudo defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser
+# 将登陆窗口显示为 = 名称和密码（0:用户列表/1:名称和密码）
+% sudo defaults write /Library/Preferences/com.apple.loginwindow SHOWFULLNAME -bool true;
+# 显示睡眠重新启动和关机按钮 = ON
+% sudo defaults write /Library/Preferences/com.apple.loginwindow PowerOffDisabled -bool false;
 在登录窗口中显示输入法菜单 = OFF
-显示密码提示 = ON
+% sudo defaults write /Library/Preferences/com.apple.loginwindow showInputMenu -bool false;
+# 显示密码提示 = ON（0:OFF/3:ON）
+% sudo defaults write /Library/Preferences/com.apple.loginwindow RetriesUntilHint -int 3;
 将快速用户切换菜单显示 = OFF
-; 登录选项 - 辅助功能选项
-所有选项 = OFF
+# 登录选项 - 辅助功能选项 = OFF
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add closeViewHotkeysEnabled 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add closeViewScrollWheelToggle 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add closeViewTrackpadGestureZoomEnabled 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add mouseDriver 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add slowKey 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add stickyKey 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add switchOnOffKey 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add virtualKeyboardOnOff 0;
+% sudo defaults write /Library/Preferences/com.apple.loginwindow accessibilitySettings -dict-add voiceOverOnOffKey 0;
 ; 当前用户
 允许用户使用Apple ID重设密码 = ON
 允许用户管理这台电脑 = ON
 ; 当前用户 - 登录项
 登录项 = Caffeine/Alfred
-; 客人用户 - 关闭
+# 客人用户 - 关闭
+% sudo defaults write /Library/Preferences/com.apple.loginwindow GuestEnabled -bool false;
 ```
 
 ### 辅助功能 ### 
@@ -466,13 +488,13 @@ DNS服务器 = 208.67.220.220/208.67.222.222
 ```
 [声音]
 ; 声音效果
-# 启动时播放声音 = ON
+# 启动时播放声音 = ON（％00:ON/％01:OFF）
 % sudo nvram StartupMute=％00
-or off
-% sudo nvram StartupMute=％01
 # 播放用户界面声音效果 = OFF
-% defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -int 0;
+% defaults write com.apple.systemsound com.apple.sound.uiaudio.enabled -bool false;
 当更改音量时播放反馈 = OFF
+defaults write NSGlobalDomain com.apple.sound.beep.feedback -bool false;
+defaults write NSGlobalDomain com.apple.sound.beep.volume -float 0.0;
 在菜单栏中显示音量 = ON
 ; 输出
 ; 输入
@@ -816,9 +838,17 @@ Bonjour电脑 = ON
 ```
 [AppStore - 偏好设置]
 自动更新 = OFF
-自动下载 = OFF
-视频自动播放 = OFF
-App内评分及评论 = OFF
+自动下载在其他设备上购买的App = OFF
+# 视频自动播放 = OFF
+% defaults write com.apple.appstore AutoPlayVideoSetting -string off;
+# App内评分及评论 = OFF
+% defaults write com.apple.appstore InAppReviewEnabled -bool false;
+```
+
+```
+# AppStore相关
+# 启用Debug菜单 = ON
+defaults write com.apple.appstore ShowDebugMenu -bool true;
 ```
 
 ### Safari浏览器 ###
@@ -893,7 +923,8 @@ Ghostery Lite
 自动存储文章以便离线阅读 = OFF
 停用插件以节能 = ON
 默认编码 = Unicode(UTF-8)
-在菜单栏中显示开发菜单 = ON
+# 在菜单栏中显示开发菜单 = ON
+% defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true;
 % killall Safari;
 ```
 
@@ -1299,6 +1330,8 @@ HTML存储编码 = UTF-8
 % defaults write com.apple.screencapture location "${HOME}/Downloads";
 # 截屏文件格式 = png
 % defaults write com.apple.screencapture type -string png;
+# 截屏文件名字 = ScreenShot
+% defaults write com.apple.screencapture name "ScreenShot";
 # 截屏时显示缩略图 = ON
 % defaults write com.apple.screencapture show-thumbnail -bool true;
 # 截屏无阴影 = ON

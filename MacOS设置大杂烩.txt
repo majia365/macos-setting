@@ -1,6 +1,52 @@
 
+
+https://shadowfile.inode.link/blog/2018/06/advanced-defaults1-usage/
+
+
 url:
 https://macos-defaults.com/finder/nstableviewdefaultsizemode.html
+
+
+
+defaults read /Library/Preferences/com.apple.loginwindow autoLoginUser
+sudo defaults write /Library/Preferences/com.apple.loginwindow autoLoginUser ShortName
+sudo defaults delete /Library/Preferences/com.apple.loginwindow autoLoginUser
+
+defaults read com.apple.loginwindow
+defaults -currentHost read com.apple.loginwindow TALAppsToRelaunchAtLogin
+defaults read /Library/Preferences/com.apple.loginwindow
+
+
+defaults -currentHost write com.apple.screensaver askForPassword -int 1
+defaults read com.apple.screensaver
+{
+    askForPassword = 0;
+    askForPasswordDelay = 0;
+    tokenRemovalAction = 0;
+}
+
+
+Handoff
+sudo -u $(whoami) defaults write "$HOME/Library/Preferences/ByHost/com.apple.coreservices.useractivityd.plist" ActivityAdvertisingAllowed -bool no
+sudo -u $(whoami) defaults write "$HOME/Library/Preferences/ByHost/com.apple.coreservices.useractivityd.plist" ActivityReceivingAllowed -bool no
+
+defaults write ~/Library/Preferences/ByHost/com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
+defaults write ~/Library/Preferences/ByHost/com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
+
+defaults -currentHost write com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
+defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
+
+
+
+[v]  Set appearance to "Graphite"
+defaults write -g AppleAquaColorVariant -int 6
+
+[ ]  Require password on screensaver
+defaults write com.apple.screensaver askForPassword -int 1
+defaults write com.apple.screensaver askForPasswordDelay -int 5
+
+[v]  Disable press-and-hold for keys in favor of key repeat
+defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 
 
@@ -67,9 +113,6 @@ defaults write com.apple.iphonesimulator "ScreenShotSaveLocation" -string "~/Pic
 # Hides Safari’s favorites/bookmarks bar by default
 defaults write com.apple.Safari ShowFavoritesBar -bool false
 
-# Safari > Preferences > Advanced
-# Show Developer menu item for developer tools
-# defaults write com.apple.Safari.SandboxBroker ShowDevelopMenu -bool true
 
 # Safari > Preferences > Search > Search engine
 # Set the Safari default search engine to DuckDuckGo
@@ -153,14 +196,7 @@ Sidebar icon size
 
 Browser Settings
 
-    defaults write com.apple.finder QuitMenuItem -bool true
-    defaults write com.apple.finder ShowStatusBar -bool true
-    defaults write com.apple.finder ShowPathbar -bool true
-    defaults write com.apple.finder _FXSortFoldersFirst -bool true
     defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
-    defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
-    defaults write com.apple.finder NewWindowTarget -string "PfDe"
-    defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desktop/"
 
 Animations
 
@@ -171,15 +207,6 @@ Behaviour
     
     defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 
-Alerts
-
-    defaults write com.apple.finder WarnOnEmptyTrash -bool false
-    defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
-
-Dock Size
-
-    defaults write com.apple.dock tilesize -int 2
-    defaults write com.apple.dock tilesize -int 36
 
 Dock Behaviour
 
@@ -212,10 +239,6 @@ Print Options
     defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
     defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
     defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
-
-Show all filename extensions
-
-    defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
 
 Spring loading for directories
@@ -260,13 +283,10 @@ GUI Animations, Improvements
     defaults write -g NSWindowResizeTime -float 0.001
     defaults write -g NSScrollAnimationEnabled -bool false
     defaults write -g NSAutomaticWindowAnimationsEnabled -bool false
-    defaults write -g AppleInterfaceStyle -string "Dark"
     defaults write com.apple.Siri StatusMenuVisible -bool false
 
 Better Security
 
-    defaults write com.apple.screensaver askForPassword -int 1
-    defaults write com.apple.screensaver askForPasswordDelay -int 0
     sudo defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd.plist LocationServicesEnabled -bool NO
 
 Enable AirDrop over Ethernet and on unsupported Macs
@@ -769,3 +789,827 @@ SystemAudioVolume	%80
 % ioreg -rd1 -c IOPlatformExpertDevice | grep "IOPlatformUUID"
 "IOPlatformUUID" = "A393A6CA-628F-5A5D-B941-402B3C408A92"
 
+
+
+
+
+
+
+
+    SS64
+    macOS 
+
+How-to
+
+How-to: System preference settings for macOS
+
+The preferences below can be applied using defaults
+
+    Use at your own risk.
+
+Many of these values can harm your system if used improperly.
+Before making changes with defaults write, use defaults read and make a note of any current settings.
+defaults delete can be used to remove a preference completely.
+
+Some of these changes require a logout/restart to take effect. All settings are case sensitive.
+
+A boolean value can be given as -bool[ean] TRUE, FALSE, YES or NO (not case sensitive).
+
+Applications do access the defaults system while they're running, so don't modify the defaults of a running application. If you change a default in a domain that belongs to a running application, the application won't see the change and might even overwrite the default. This includes the 'System Preferences' app.
+GlobalPreferences
+
+    Enable multitouch trackpad auto orientation sensing (for all users)
+    $ defaults write /Library/Preferences/com.apple.MultitouchSupport ForceAutoOrientation -boolean
+
+    Map navigation swipe to 3 fingers (turn this off to get 4-finger navigation swipe)
+    $ defaults write com.apple.systempreferences com.apple.preference.trackpad.3fdrag-4fNavigate -boolean-neg
+
+    Hide Shutdown Button on Login Window:
+    $ defaults write com.apple.loginwindow ShutDownDisabled -bool true
+
+    Remove Restart Button From Login Window:
+    $ defaults write com.apple.loginwindow RestartDisabled -bool true
+
+    Disable creation of Metadata Files on Network Volumes (avoids creation of .DS_Store and AppleDouble ._ files.)
+    $ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+    Disable creation of Metadata Files on USB Volumes (avoids creation of .DS_Store and AppleDouble ._ files.)
+    $ defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+    Disable Login for Hidden User ">Console"
+    $ defaults write com.apple.loginwindow DisableConsoleAccess -bool true
+
+    Add a message to the login screen:
+    $ sudo defaults write /Library/Preferences/com.apple.loginwindow LoginwindowText "Your Message"
+
+    Change login screen background:
+    $ sudo defaults write /Library/Preferences/com.apple.loginwindow DesktopPicture "/Library/Desktop Pictures/Aqua Blue.jpg"
+
+    Disable transparency in the menu bar and elsewhere
+    Yosemite - equivalent to System Preferences ➞ Accessibility ➞ Display ➞ "Reduce Transparency"
+    defaults write com.apple.universalaccess reduceTransparency -bool true
+
+    Disable Expose
+    $ defaults write com.apple.dock mcx-expose-disabled -boolean true
+
+    In Expose, only show windows from the current space:
+    $ defaults write com.apple.dock wvous-show-windows-in-other-spaces -bool FALSE
+    $ killall Dock
+
+    In Expose, show other spaces' windows (default):
+    $ defaults delete com.apple.dock wvous-show-windows-in-other-spaces
+    $ killall Dock
+
+    Enable 64-bit Kernel:
+    $ defaults write /Library/Preferences/SystemConfiguration/com.apple.Boot.plist Kernel Flags -string
+
+    Turn off the “Application Downloaded from Internet” quarantine warning:
+    $ defaults write com.apple.LaunchServices LSQuarantine -bool NO
+
+Every App
+
+    Restore the the 'Save As' menu item (Equivalent to adding a Keyboard shortcut in the System Preferences.app )
+    $ defaults write -g NSUserKeyEquivalents -dict-add 'Save As...' '@$S'
+
+    Save to disk (not to iCloud) by default:
+    $ defaults write -g NSDocumentSaveNewDocumentsToCloud -bool false
+
+    Expand 'Save As…' dialog boxes by default:
+    defaults write -g NSNavPanelExpandedStateForSaveMode -boolean true
+    defaults write -g NSNavPanelExpandedStateForSaveMode2 -bool true
+
+    Expand print panel dialog boxes by default:
+    defaults write -g PMPrintingExpandedStateForPrint -boolean true
+    defaults write -g PMPrintingExpandedStateForPrint2 -bool true
+
+    Global User Interface Scale Multiplier:
+    $ defaults write -g AppleDisplayScaleFactor -float
+
+    Holding down a character key will repeat the character:
+    $ defaults write -g ApplePressAndHoldEnabled -bool false
+
+    Holding down a character key will popup a small menu showing accent characters à, á, â etc (default in recent macOS versions):
+    $ defaults write -g ApplePressAndHoldEnabled -bool true
+
+    Enable continuous spell checking everywhere:
+    $ defaults write -g WebContinuousSpellCheckingEnabled -boolean true
+
+    Enable automatic dash replacement everywhere:
+    $ defaults write -g WebAutomaticDashSubstitutionEnabled -boolean true
+
+    Enable automatic text replacement everywhere:
+    $ defaults write -g WebAutomaticTextReplacementEnabled -boolean true
+
+    Quit Printer App after Print Jobs complete:
+    $ defaults write com.apple.print.PrintingPrefs "Quit When Finished" -bool true
+
+    Icon Size for Open Panels:
+    $ defaults write -g NSNavPanelIconViewIconSizeForOpenMode -number
+
+    Keyboard press and hold behavior:
+    $ defaults write -g ApplePressAndHoldEnabled -boolean true
+
+Monitor font smoothing
+
+    Display the current font smoothing:
+    $ defaults -currentHost read -globalDomain AppleFontSmoothing
+
+    Change the font smoothing (0=off, 1=light, 2=Medium/flat panel, 3=strong/blurred)
+    This is mostly needed for non-Apple displays.
+    $ defaults -currentHost write -globalDomain AppleFontSmoothing -int 0
+    Restart applications to see the effect
+
+    Delete the setting completely (restore default)
+    $ defaults -currentHost delete -globalDomain AppleFontSmoothing
+
+    Set the font anti-aliasing minimum sizes, globally or per-application:
+    $ defaults -currentHost write .GlobalPreferences AppleSmoothFontsSizeThreshold -int 16
+    $ defaults -currentHost write .GlobalPreferences AppleFontSmoothing -int 0
+    $ defaults -currentHost write com.apple.safari AppleAntiAliasingThreshold -int 16
+
+Address Book
+
+    Access the Debug menu in Contacts/Address Book (Set to NO to revert to the default):
+    $ defaults write com.apple.addressbook ABShowDebugMenu -bool YES
+
+BBEdit
+
+    Do not share the "search for" string with other applications:
+    $ defaults write com.barebones.bbedit FindDialog_UsesFindScrap -bool NO
+
+    Use old style modal Find Dialog:
+    $ defaults write com.barebones.bbedit FindDialog:UseOldSk00lFindDialog -boolean true
+
+    Control-left-arrow or Control-right-arrow to scroll horizontally (pre-8.5 behavior )
+    $ defaults write com.barebones.bbedit Editor_ControlArrowCamelCase -bool NO
+    $ defaults write com.barebones.bbedit Editor_ControlArrowHScroll -bool YES
+
+    Control-left-arrow or Control-right-arrow to jump to the next (or previous) transition from lower-case to upper-case characters (or a word boundary, whichever comes first). This is the default:
+
+    $ defaults write com.barebones.bbedit Editor_ControlArrowCamelCase -bool YES
+    $ defaults write com.barebones.bbedit Editor_ControlArrowHScroll -bool NO
+
+    more BBEdit prefs.
+
+Dashboard launcher
+
+    Drag widgets out of dashboard (devmode)
+    $ defaults write com.apple.dashboard devmode -boolean YES/NO
+
+Dictionary
+
+    Reuse dictionary definition window:
+    $ defaults write com.apple.Dictionary ProhibitNewWindowForRequest -boolean YES/NO
+
+DiskUtility
+
+    Show hidden Partitions:
+    $ defaults write com.apple.DiskUtility DUShowEveryPartition -boolean YES/NO
+
+Dock
+
+    Show indicator lights for open applications in the dock:
+    $ defaults write com.apple.dock show-process-indicators -bool true
+    $ killall Dock
+
+    Disable Bouncing dock icons:
+    $ defaults write com.apple.dock no-bouncing -bool True
+    $ killall Dock
+    To re-enable, set this back to False
+
+    Minimize windows into their application’s icon
+    $ defaults write com.apple.dock minimize-to-application -bool true
+
+    Make the Dock Icon of any 'Hidden' Applications Dim/Translucent:
+    $ defaults write com.apple.Dock showhidden -bool YES
+    $ killall Dock
+
+    Disable multi-display swoosh animations
+    $ defaults write com.apple.dock workspaces-swoosh-animation-off -bool YES && killall Dock
+    Re-enable with
+    $ defaults delete com.apple.dock workspaces-swoosh-animation-off && killall Dock
+
+    Remove the animation when hiding or showing the dock
+    $ defaults write com.apple.dock autohide-time-modifier -float 0
+
+    Enable iTunes pop-up notifications:
+    $ defaults write com.apple.dock itunes-notifications -boolean dock
+
+    Minimize Dock effect Genie (default)
+    $ defaults write com.apple.dock mineffect -string "genie" && killall Dock
+
+    Minimize Dock effect Scale:
+    $ defaults write com.apple.dock mineffect -string "scale" && killall Dock
+
+    Minimize Dock effect Suck:
+    $ defaults write com.apple.dock mineffect -string "suck" && killall Dock
+
+    Turn the Dock icons translucent for applications that are open but hidden:
+    $ defaults write com.apple. Dock showhidden -bool YES;
+    $ killall Dock
+    (replace 'YES' with 'NO' to disable this feature)
+
+    Add a 'Recent Applications' stack to the Dock.
+    $ defaults write com.apple.dock persistent-others -array-add '{ "tile-data" = { "list-type" = 1; }; "tile-type" = "recents-tile"; }'
+    $ killall Dock
+    To remove - just drag out of the dock again
+
+    Stacks, Activate Mouse Over Gradient:
+    $ defaults write com.apple.dock mouse-over-hilte-stack -boolean YES
+    $ killall Dock
+    To deactivate set back to NO
+
+    Delete the icon cache to force a rebuild:
+    $ rm /var/folders/*/*/*/com.apple.dock.iconcache; killall Dock
+
+Finder
+
+    Show hidden files:
+    $ defaults write com.apple.finder AppleShowAllFiles TRUE
+    $ killall Finder
+
+    Hide hidden files (default)
+    $ defaults write com.apple.finder AppleShowAllFiles FALSE
+    $ killall Finder
+
+    Show all filename extensions
+    $ defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+
+    Disable the macOS Crash reporter (quit dialog after an application crash)
+    $ defaults write com.apple.CrashReporter DialogType none
+    To enable the crash reporter (default) change none to prompt
+
+    Disable dashboard widgets (saves RAM)
+    $ defaults write com.apple.dashboard mcx-disabled -boolean YES
+    To Enable dashboard widgets (default) set this to NO
+
+    Disable the New Window Animation:
+    $ defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool NO
+    To enable the animation (default) set this to YES
+
+    # Show the Status Bar, this can also be toggled on the View menu:
+    $ defaults write com.apple.finder ShowStatusBar -bool true
+    # Hide the Status Bar (Default)
+    $ defaults write com.apple.finder ShowStatusBar -bool false
+
+    Start the status bar Path at $HOME (instead of Hard drive)
+    $ defaults write /Library/Preferences/com.apple.finder PathBarRootAtHome -bool TRUE/FALSE
+
+    Enable Remote Disc (1)
+    $ defaults write com.apple.NetworkBrowser EnableODiskBrowsing -boolean true
+
+    Enable Remote Disc (2)
+    $ defaults write com.apple.NetworkBrowser ODSSupported -boolean true
+
+    Enable movie preview thumbnails:
+    $ defaults write com.apple.QuickLookDaemon QLDisableQTThumbnails -boolean NO
+
+    Playable icon previews (Movie/PDF files) Minimum size in pixels, default is 64:
+    Setting this to a large value will effectively disable the preview.
+    $ defaults write com.apple.finder QLInlinePreviewMinimumSupportedSize -integer
+
+    Auto stop previews when scrolling:
+    $ defaults write com.apple.finder AutoStopWhenScrollingOffBounds -boolean TRUE
+
+    Auto stop previews when selection changes:
+    $ defaults write com.apple.finder AutoStopWhenSelectionChanges -boolean TRUE
+
+    Show X-ray for folders with custom icons:
+    $ defaults write com.apple.DisableXRayForFoldersWithCustomIcons -boolean NO
+
+    Show X-ray folders in QuickLook:
+    $ defaults write com.apple.finder QLEnableXRayFolders -boolean TRUE; killall Finder
+
+    Enable slow motion with shift key on QuickLook:
+    $ defaults write com.apple.finder QLEnableSlowMotion -boolean TRUE
+
+    $ Hide QuickLook on deactivation or application switch:
+    $ defaults write com.apple.finder QLHidePanelOnDeactivate -boolean TRUE
+
+    When performing a search, search the current folder by default (the default 'This Mac' is "SCev")
+    $ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+
+    Show version column in search results:
+    $ defaults write com.apple.finder SearchViewSettings.ListViewSettings.columns.version.visible -boolean TRUE
+
+    Show label column in search results:
+    $ defaults write com.apple.finder SearchViewSettings.ListViewSettings.columns.label.visible -boolean TRUE
+
+    Show comments column in search results:
+    $ defaults write com.apple.finder SearchViewSettings.ListViewSettings.columns.comments.visible -boolean TRUE
+
+    Show size column in search results:
+    $ defaults write com.apple.finder SearchViewSettings.ListViewSettings.columns.size.visible -boolean TRUE
+
+    Set the sidebar icon size to small, medium or Large:
+    $ defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
+    $ defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
+    $ defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 1
+
+    Disable the warning when changing a file extension
+    $ defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+    Use white text for desktop icons:
+    $ defaults write com.apple.finder Desktop.HasDarkBackground -boolean TRUE
+
+    Show stripes in list view:
+    $ defaults write com.apple.finder FXListViewStripes -boolean TRUE; killall Finder
+
+    Allow quitting Finder like any other app, quitting Finder will also hide all desktop icons.
+    This is only really useful when using a 3rd party file manager:
+    $ defaults write com.apple.finder QuitMenuItem -bool YES; killall Finder
+
+Front Row launcher
+
+    Set the preferred display to use:
+    $ defaults write com.apple.frontrow FrontRowUsePreferredDisplayID -integer
+
+iCal
+
+    Log HTTP Activity:
+    $ defaults write com.apple.iCal LogHTTPActivity -boolean TRUE
+
+iTunes 10
+
+    Make the arrows next to artist & album jump to local iTunes library folders instead of Store:
+    $ defaults write com.apple.iTunes show-store-link-arrows -bool YES
+    $ defaults write com.apple.iTunes invertStoreLinks -bool YES
+    To restore the default change the YES to NO
+
+    Restore the standard close/minimise buttons:
+    $ defaults write com.apple.iTunes full-window -1
+
+    Hide the iTunes Genre list:
+    $ defaults write com.apple.iTunes show-genre-when-browsing -bool FALSE
+
+Mail
+
+    Close Apple Mail before making any changes.
+
+    Set a minimum font size of 14px (affects reading and sending email):
+    $ defaults write com.apple.mail MinimumHTMLFontSize 14
+
+    Force all Mail messages to display as plain text:
+    $ defaults write com.apple.mail PreferPlainText -bool TRUE
+    For rich text (the default) set it to FALSE
+
+    Disable tracking of Previous Recipients:
+    $ defaults write com.apple.mail SuppressAddressHistory -boolean TRUE
+
+    Send Windows friendly attachments:
+    $ defaults write com.apple.mail SendWindowsFriendlyAttachments -boolean TRUE
+
+Mouse
+
+    Enable momentum scrolling for Magic Mouse:
+    $ defaults write com.apple.driver.AppleBluetoothMultitouch.mouse MouseMomentumScroll -boolean TRUE
+
+OmniGraffle
+
+    Allow scroll wheel zooming:
+    $ defaults write com.omnigroup.OmniGraffle DisableScrollWheelZooming -boolean NO
+
+    Allow scroll wheel zooming in OmniGrafflePro:
+    $ defaults write com.omnigroup.OmniGrafflePro DisableScrollWheelZooming -boolean NO
+
+Preview
+
+    Scale images by default when printing:
+    $ defaults write write com.apple.Preview PVImagePrintingScaleMode -boolean TRUE
+
+    Preview Auto-rotate by default when printing:
+    $ defaults write write com.apple.Preview PVImagePrintingAutoRotate -boolean TRUE
+
+    Quit Always Keeps Windows:
+    $ defaults write com.apple.Preview NSQuitAlwaysKeepsWindows -boolean TRUE
+
+Quick Time Player
+
+    Automatically show Closed Captions (CC) when opening a Movie:
+    $ defaults -currentHost write com.apple.QuickTimePlayerX.plist MGEnableCCAndSubtitlesOnOpen -bool TRUE
+
+Safari
+
+    Enable encoding detector:
+    $ defaults write com.apple.Safari WebKitUsesEncodingDetector -boolean TRUE
+
+    Tooltip Font Size:
+    $ defaults write com.apple.Safari NSToolTipsFontSize -float
+
+    Enable debug menu:
+    $ defaults write com.apple.Safari IncludeDebugMenu -boolean TRUE
+
+ScreenSharing
+
+    Debug (To Show Bonjour)
+    $ defaults write com.apple.ScreenSharing debug -boolean
+
+    Do Not Send Special Keys to Remote Machine
+    $ defaults write com.apple.ScreenSharing DoNotSendSystemKeys -boolean TRUE
+
+    Skip local address check:
+    $ defaults write com.apple.ScreenSharing skipLocalAddressCheck -boolean TRUE
+
+    Screen sharing image quality for Apple's built-in VNC server:
+    1 = black and white  2 = grayscale  3 = 8-bit color  4 = 16-bit color  5 = full color
+    $ defaults write com.apple.ScreenSharing controlObserveQuality -integer 5
+
+Screen Capture
+
+    Remove the drop shadows from saved screenshots (Mojave and higher):
+    defaults write com.apple.screencapture disable-shadow -bool TRUE && killall SystemUIServer
+
+    Restore the default drop shadows:
+    defaults write com.apple.screencapture disable-shadow -bool FALSE && killall SystemUIServer
+
+    Set the screenshot location to the Desktop (default):
+    defaults write com.apple.screencapture "location" -string "~/Desktop" && killall SystemUIServer
+
+    Set the screenshot location to ~/Pictures
+    defaults write com.apple.screencapture "location" -string "~/Pictures" && killall SystemUIServer
+
+    Read the current screenshot location:
+    defaults read com.apple.screencapture "location"
+
+    Restore the default screenshot location:
+    defaults delete com.apple.screencapture "location" && killall SystemUIServer
+
+Software update
+
+    While applying any changes to SoftwareUpdate defaults, set software update to OFF to avoid any conflict with the defaults system cache. (Also close the System Preferences app)
+
+    sudo softwareupdate --schedule OFF
+    <apply changes>
+    sudo softwareupdate --schedule ON
+
+    Automatically check for updates (required for any downloads):
+    $ sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist AutomaticCheckEnabled -bool YES
+
+    Download updates automatically in the background
+    $ sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate AutomaticDownload -bool YES
+
+    Install app updates automatically:
+    $ sudo defaults write /Library/Preferences/com.apple.commerce AutoUpdate -bool YES
+
+    Don't Install macos updates automatically
+    $ sudo defaults write /Library/Preferences/com.apple.commerce AutoUpdateRestartRequired -bool false
+
+    Install system data file updates automatically:
+    $ sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist ConfigDataInstall -bool YES
+
+    Install critical security updates automatically:
+    $ sudo defaults write /Library/Preferences/com.apple.SoftwareUpdate.plist CriticalUpdateInstall -bool YES
+
+Spaces
+
+    When switching applications, switch to respective space
+    $ defaults write -g AppleSpacesSwitchOnActivate -bool true
+
+RemoteManagement
+
+    Disable Multicast:
+    $ defaults write /Library/Preferences/com.apple.RemoteManagement ARD_MulticastAllowed -boolean
+
+Remote Desktop
+
+    Set the maximum number of computers that can be observed:
+    $ defaults write com.apple.RemoteDesktop multiObserveMaxPerScreen -integer 9
+    (up to 50 opposed to the default of 9)
+
+Terminal
+
+    Terminal windows take focus with mouse over window:
+    $ defaults write com.apple.terminal FocusFollowsMouse -string YES
+
+    Terminal windows take focus with click (default)
+    $ defaults write com.apple.terminal FocusFollowsMouse -string NO
+
+TimeMachine
+
+    Auto backup:
+    $ defaults write com.apple.TimeMachine AutoBackup =1
+
+    Backup frequency default= 3600 seconds (every hour) 1800 = 1/2 hour, 7200=2 hours
+    $ sudo defaults write /System/Library/Launch Daemons/com.apple.backupd-auto StartInterval -int 1800
+
+Related macOS commands
+
+defaults - set preferences, for both macOS and individual applications.
+More macOS and App defaults from macos-defaults.com.
+sudo - Execute a command as another user.
+macOS How To
+ 
+Copyright © 1999-2023 SS64.com
+Some rights reserved
+
+
+
+
+
+
+
+
+I'll annotate inline below, you can snag the original if it looks useful to you. The first hunk is just standard shell boilerplate. I tend to write POSIX shell and eschew any bash specific nonsense for maximum compatibility.
+
+#!/bin/sh
+# install-macos (c) 2017-2018 Matthew J. Ernisse <matt@going-flying.com>
+# All Rights Reserved.
+#
+# Customize a base macOS install.
+#
+# Redistribution and use in source and binary forms,
+# with or without modification, are permitted provided
+# that the following conditions are met:
+#
+#     * Redistributions of source code must retain the
+#       above copyright notice, this list of conditions
+#       and the following disclaimer.
+#     * Redistributions in binary form must reproduce
+#       the above copyright notice, this list of conditions
+#       and the following disclaimer in the documentation
+#       and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+# "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+# LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+# FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+# BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
+# OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
+# TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+set -e
+
+I don't use iCloud, I run ownCloud instead. This just makes the directory I use to sync my files to/from.
+
+create_owncloud_dir()
+{
+    if [ ! -d "$HOME/Documents/cloud" ]; then
+        echo "Creating ownCloud directory"
+        mkdir -p "$HOME/Documents/cloud"
+    fi
+}
+
+Disable more things I don't use or care about. Touristd is a bit annoying because they can push more crap to bother you with down the line. This at least shuts it up after initial install.
+
+disable_siri()
+{
+    echo "Disabling Siri"
+    defaults write com.apple.Siri StatusMenuVisible -bool false
+    defaults write com.apple.Siri UserHasDeclinedEnable -bool true
+    defaults write com.apple.assistant.support 'Assistant Enabled' 0
+}
+
+disable_touristd()
+{
+    defaults write com.apple.touristd \
+        seed-https://help.apple.com/osx/mac/10.13/whats-new \
+        -date "$(date)"
+}
+
+Set a whole bunch of system preferences. Disable automatic spelling and unicode quote correction. Set my preferred Finder style (list view), and enable daily update check and installation. Also try to keep finder from crapping .DS_Store folders all over the network shares.
+
+set_defaults()
+{
+    echo "Writing various macOS defaults"
+    # I suspect I am missing some...
+    defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+    defaults write NSGlobalDomain AppleICUForce24HourTime -int 1
+    defaults write NSGlobalDomain AppleAquaColorVariant -int 6
+    defaults write NSGlobalDomain AppleInterfaceStyle "Dark"
+    defaults write NSGlobalDomain \
+        AppleMiniturizeOnDoubleClick -bool false
+    defaults write NSGlobalDomain AppleShowScrollBars "Always"
+    defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+    defaults write NSGlobalDomain \
+        NSAutomaticCapitalizationEnabled -int 0
+    defaults write NSGlobalDomain \
+        NSAutomaticDashSubstitutionEnabled -int 0
+    defaults write NSGlobalDomain \
+        NSAutomaticPeriodSubstitutionEnabled -int 0
+    defaults write NSGlobalDomain \
+        NSAutomaticQuoteSubstitutionEnabled -int 0
+    defaults write NSGlobalDomain \
+        NSAutomaticSpellingCorrectionEnabled -int 0
+    defaults write NSGlobalDomain \
+        NSAutomaticTextCompletionEnabled -int 1
+    defaults write NSGlobalDomain NSCloseAlwaysConfirmsChanges -int 1
+
+    defaults write com.apple.keyboard.fnState -int 1
+    defaults write com.apple.screencapture disable-shadow -bool true
+    defaults write com.apple.finder FXPreferredViewStyle -string '"Nlsv"'
+
+    # Check for updates automatically, daily, and auto-install
+    # security updates
+    defaults write com.apple.SoftwareUpdate \
+        AutomaticCheckEnabled -bool true
+    defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
+    defaults write com.apple.SoftwareUpdate AutomaticDownload -int 1
+    defaults write com.apple.SoftwareUpdate CriticalUpdateInstall -int 1
+
+    # Don't shit .DS_Store all over the show.
+    defaults write com.apple.desktopservices \
+        DSDontWriteNetworkStores true
+}
+
+As it says, install my internal CA into the trust store.
+
+# Install and trust my local CA.
+install_ca()
+{
+    echo "Installing CA, you will be prompted for your password"
+    local tmpfile=$(mktemp)
+    curl --fail \
+        --silent \
+        --location \
+        --insecure \
+        --output $tmpfile \
+        http://apollo.internal.ub3rgeek.net/ca/ub3rgeek_Internal_CA.pem
+
+    security add-trusted-cert \
+        -k "$HOME/Library/Keychains/login.keychain-db" \
+        $tmpfile
+
+    rm $tmpfile
+}
+
+This gets called to install homebrew and a bunch of applications. There is a nasty hack later as the script needs to be run with sudo, but homebrew won't work that way.
+
+# I hate you so much homebrew for having a fucking trustmeprompt shell
+# pipe to a thing installer.  Fuck you.
+install_homebrew()
+{
+    echo "Installing Homebrew and sundry applications"
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    brew analytics off
+    brew install caskroom/cask/docker
+    brew install caskroom/cask/firefox
+    brew install caskroom/cask/iterm2
+    brew install caskroom/cask/owncloud
+    brew install caskroom/cask/visual-studio-code
+    brew install caskroom/cask/vnc-viewer
+    brew install caskroom/cask/vlc
+#   broken?!
+#   brew install caskroom/fonts/font-inconsolata
+    brew install imagemagick
+    brew install flake8
+    brew install ffmpeg
+    brew install fdk-aac-encoder
+    brew install gnupg
+    brew install gnutls
+# this doesn't seem to function correctly.
+#   brew install opensc
+    brew install pass
+    brew install tmux
+    brew install telnet
+    brew install pwgen
+    brew install wget
+}
+
+Setup my default shell environment.
+
+install_profile()
+{
+    echo "Installing .profile"
+    curl --fail \
+        --silent \
+        --location \
+        --output "$HOME/.profile" \
+        "https://ssl.ub3rgeek.net/git/?p=misc.git;a=blob_plain;f=profile;hb=HEAD"
+}
+
+Setup autofs, this gets customized a bit for different sites. It also setups the client to match my NFSv4 configuration.
+
+create_automount()
+{
+    local nfs_server="tardis.internal.ub3rgeek.net"
+    local shares="/vol/staff/mernisse /vol/backup /vol/media"
+    echo "Setting up NFS automount."
+
+    if [ ! -d "$HOME/Shares" ]; then
+        mkdir $HOME/Shares
+    fi
+
+    if [ ! -f /etc/auto_nfs ]; then
+        touch /etc/auto_nfs
+        chown root:wheel /etc/auto_nfs
+        chmod 644 /etc/auto_nfs
+    fi
+
+    for share in $shares; do
+        if ! grep -q "nfs://$nfs_server$share" /etc/auto_nfs; then
+            echo "$(basename $share)        nfs://$nfs_server$share" \
+                >> /etc/auto_nfs
+        fi
+    done
+
+    if ! grep -q "$HOME/Shares  auto_nfs" /etc/auto_master; then
+        echo "$HOME/Shares  auto_nfs" >> /etc/auto_master
+    fi
+
+    if ! grep -q nfs.client.default_nfs4domain /etc/nfs.conf; then
+        echo "nfs.client.default_nfs4domain = localdomain" >> /etc/nfs.conf
+    fi
+
+    automount -c
+}
+
+This just says hello and is called at the start of the script.
+
+say_hello()
+{
+    local reset="\033[0m"
+    local green="\033[32;1;m"
+    local yellow="\033[33;1;m"
+    local red="\033[31;1;m"
+    local magenta="\033[35;1;m"
+    local blue="\033[34;1;m"
+    local cyan="\033[36;1;m"
+
+    local hello="ï£¿ ${green}H${yellow}e${red}l${magenta}l${blue}o${reset}"
+    hello="${hello}, I am the Macintosh. "
+
+    hello="${hello} $(sysctl -n hw.model)"
+    hello="${hello} ${cyan}macOS $(sw_vers -productVersion)${reset}"
+
+    printf "$hello\n"
+}
+
+The default uid/gid doesn't match my network so I change it here. This is why the script needs to be run as root. You do have to be careful with this since it can do wonky things to your login session once it does what its thing.
+
+update_uid_and_groups()
+{
+    if [ "$(id -u mernisse)" -eq 1000 ]; then
+        return
+    fi
+
+    echo "Setting uid to 1000 and creating media group"
+    dscl . -change $HOME UniqueID $SUDO_UID 1000
+    dseditgroup -o create -i 1042 media
+    dseditgroup -o edit -a mernisse media
+    echo "Changing ownership of $HOME to reflect new uid"
+    chown -R 1000 $HOME
+}
+
+This is the start of execution. It checks to see if you are running as root or doing the homebrew step.
+
+# TODO:
+# https://download.panic.com/transmit/Transmit%204.4.13.zip
+# ublock origin?
+if [ ! "$UID" -eq 0 ] && [ ! "$1" = "homebrew" ]; then
+    echo "Please run this script with sudo(8)."
+    exit 1
+fi
+
+Catch the homebrew install which needs to be run as the user, not as root.
+
+if [ "$1" = "homebrew" ]; then
+    install_homebrew
+    echo "Returning to sudo session..."
+    exit
+fi
+
+Call all the stuff above.
+
+say_hello
+set_defaults
+disable_siri
+disable_touristd
+install_ca
+create_owncloud_dir
+
+I replaced all the spinning disks with SSDs a while ago. So I don't need the sudden motion sensor..
+
+echo "Disabling SuddenMotionSensor"
+pmset -a sms 0
+
+Some finder related things here. I don't like things being hidden.
+
+echo "Unhiding /Volumes and ~/Library"
+chflags nohidden ~/Library
+chflags nohidden /Volumes
+
+locate is a good thing to have.
+
+echo "Enabling locatedb"
+launchctl load -w /System/Library/LaunchDaemons/com.apple.locate.plist
+install_profile
+
+This re-executes the script as the user that ran sudo. This is done to make homebrew happy.
+
+echo "Dropping privs to $SUDO_USER to install homebrew"
+echo "************************************************"
+# This is a hack...
+sudo -u $SUDO_USER $0 homebrew
+
+Finally, change my UID and GID if needed.
+
+# Do this late, because my window session will still have the old UID cached
+# it gets... wonky.
+update_uid_and_groups
+create_automount
+
+And that's it. There is still a few things I have to do manually, including installing a Configuration Profile with my WiFi and VPN settings but it really reduces the amount of things that I have to do to get a new macOS install up and running. 👍 🥃

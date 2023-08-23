@@ -6,7 +6,7 @@ import os
 import sys
 
 # https://pydoc.dev/mistletoe/latest/index.html
-import mistletoe
+import mistletoe   # markdown
 from mistletoe.block_token import Heading, CodeFence as CodeBlock
 
 reload(sys)
@@ -55,10 +55,11 @@ def md2sh(infile, outfile=""):
     with open(shfile, "wt", encoding="utf-8") as fo:
         fo.writelines(codelines)
 
-def main():
-    print_trace("argn: ", len(sys.argv))
-    print_trace("argv: ", sys.argv)
+def main(argv, env):
+    print_trace("argn: ", len(argv))
+    print_trace("argv: ", argv)
+    print_trace("env: ", env)
     md2sh(infile="MacOS系统设置篇.md", outfile="macos-setting.0.sh")
 
 if __name__ == "__main__":
-    main()
+    main(argv=sys.argv, env=os.environ._data)
