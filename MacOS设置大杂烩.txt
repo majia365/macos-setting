@@ -1,10 +1,320 @@
 
-
 https://shadowfile.inode.link/blog/2018/06/advanced-defaults1-usage/
 
 
 url:
 https://macos-defaults.com/finder/nstableviewdefaultsizemode.html
+
+
+https://www.real-world-systems.com/docs/defaults.txt.html
+https://www.real-world-systems.com/docs/defaults.1.html
+
+plist位置
+~/Library/Preferences  默认位置
+/Library/Preferences
+/Library/Preferences/SystemConfiguration
+/System/Library/LaunchAgents  运行调度配置
+-currentHost  =  ~/Library/Preferences/ByHost
+−globalDomain = NSGlobalDomain
+-app
+kCFPreferencesAnyApplication
+
+defaults read -app TextEdit   =    defaults read com.apple.TextEdit
+
+defaults read com.apple.loginwindow
+defaults read ~/Library/Preferences/com.apple.loginwindow
+defaults read /Library/Preferences/com.apple.loginwindow
+defaults -currentHost read com.apple.loginwindow
+
+
+~/Library/Preferences
+ByHost
+ContextStoreAgent.plist
+MobileMeAccounts.plist
+com.apple.AMPLibraryAgent.plist
+com.apple.ATS.plist
+com.apple.Accessibility.plist
+com.apple.ActivityMonitor.plist
+com.apple.AdLib.plist
+com.apple.AddressBook.plist
+com.apple.AppStore.plist
+com.apple.AppleMediaServices.notbackedup.plist
+com.apple.AppleMediaServices.plist
+com.apple.AppleMediaServicesUI.plist
+com.apple.AppleMultitouchMouse.plist
+com.apple.AppleMultitouchTrackpad.plist
+com.apple.AssistiveControl.editor.plist
+com.apple.AvatarUI.Staryu.plist
+com.apple.BezelServices.plist
+com.apple.CallHistorySyncHelper.plist
+com.apple.CharacterPaletteIM.plist
+com.apple.CharacterPicker.plist
+com.apple.CloudKit.plist
+com.apple.CommCenter.counts.plist
+com.apple.CoreDuet.plist
+com.apple.CoreGraphics.plist
+com.apple.CrashReporter.plist
+com.apple.DataDeliveryServices.plist
+com.apple.DiagnosticExtensions.extensionTracker.plist
+com.apple.DictionaryServices.plist
+com.apple.DiskUtility.plist
+com.apple.EmojiCache.plist
+com.apple.EmojiPreferences.plist
+com.apple.FaceTime.plist
+com.apple.FolderActionsDispatcher.plist
+com.apple.FontRegistry.user.plist
+com.apple.GEO.plist
+com.apple.HIToolbox.plist
+com.apple.IMCoreSpotlight.plist
+com.apple.LaunchServices
+com.apple.LaunchServices.QuarantineEventsV2
+com.apple.LaunchServices.plist
+com.apple.Messages.plist
+com.apple.MobileSMS.CKDNDList.plist
+com.apple.MobileSMS.plist
+com.apple.MobileSMSPreview.plist
+com.apple.Music.eq.plist
+com.apple.Music.plist
+com.apple.NewDeviceOutreach.plist
+com.apple.PhotoBooth.plist
+com.apple.PowerChime.plist
+com.apple.Preferences.plist
+com.apple.Safari.PasswordBreachAgent.plist
+com.apple.Safari.SafeBrowsing.plist
+com.apple.Safari.SandboxBroker.plist
+com.apple.Safari.plist
+com.apple.SafariBookmarksSyncAgent.plist
+com.apple.ServicesMenu.Services.plist
+com.apple.SetupAssistant.plist
+com.apple.Siri.plist
+com.apple.SpeechRecognitionCore.plist
+com.apple.Spotlight.plist
+com.apple.SystemProfiler.plist
+com.apple.TTY.plist
+com.apple.TV.plist
+com.apple.TelephonyUtilities.plist
+com.apple.Terminal.plist
+com.apple.TextInputMenu.plist
+com.apple.UserAccountUpdater.plist
+com.apple.accessibility.heard.plist
+com.apple.accounts.plist
+com.apple.accountsd.plist
+com.apple.airplay.plist
+com.apple.amp.mediasharingd.plist
+com.apple.amsaccountsd.plist
+com.apple.amsengagementd.plist
+com.apple.animoji.plist
+com.apple.ap.adprivacyd.plist
+com.apple.appkit.xpc.openAndSavePanelService.plist
+com.apple.appstored.plist
+com.apple.assistant.backedup.plist
+com.apple.assistant.plist
+com.apple.assistant.support.plist
+com.apple.assistantd.plist
+com.apple.bird.plist
+com.apple.calculateframework.plist
+com.apple.classroom.plist
+com.apple.cloudd.plist
+com.apple.cloudpaird.plist
+com.apple.cloudphotod.plist
+com.apple.cmfsyncagent.plist
+com.apple.commcenter.callservices.plist
+com.apple.commcenter.data.plist
+com.apple.commcenter.plist
+com.apple.commerce.knownclients.plist
+com.apple.commerce.plist
+com.apple.controlcenter.plist
+com.apple.coreauthd.plist
+com.apple.coreservices.uiagent.plist
+com.apple.coreservices.useractivityd.dynamicuseractivites.plist
+com.apple.corespotlightui.plist
+com.apple.desktopservices.plist
+com.apple.dock.plist
+com.apple.driver.AppleBluetoothMultitouch.mouse.plist
+com.apple.driver.AppleBluetoothMultitouch.trackpad.plist
+com.apple.driver.AppleHIDMouse.plist
+com.apple.facetime.bag.plist
+com.apple.fileproviderd.plist
+com.apple.finder.plist
+com.apple.findmy.fmfcore.notbackedup.plist
+com.apple.findmy.fmipcore.notbackedup.plist
+com.apple.findmy.plist
+com.apple.frameworks.diskimages.diuiagent.plist
+com.apple.gamecenter.plist
+com.apple.gamed.plist
+com.apple.help.plist
+com.apple.helpviewer.plist
+com.apple.homed.notbackedup.plist
+com.apple.homed.plist
+com.apple.iApps.plist
+com.apple.iCal.plist
+com.apple.iChat.plist
+com.apple.iTunes.plist
+com.apple.icloud.fmfd.notbackedup.plist
+com.apple.icloud.fmfd.plist
+com.apple.icloud.searchpartyuseragent.plist
+com.apple.identityservicesd.plist
+com.apple.ids.deviceproperties.plist
+com.apple.ids.subservices.plist
+com.apple.imagecapture.plist
+com.apple.imagent.plist
+com.apple.imdpersistence.IMDPersistenceAgent.plist
+com.apple.imessage.bag.plist
+com.apple.imessage.plist
+com.apple.imservice.ids.FaceTime.plist
+com.apple.imservice.ids.iMessage.plist
+com.apple.inputmethod.CoreChineseEngineFramework.plist
+com.apple.internal.ck.plist
+com.apple.ipTelephony.plist
+com.apple.itunescloud.daemon.plist
+com.apple.itunescloud.plist
+com.apple.itunesstored.plist
+com.apple.keyboardservicesd.plist
+com.apple.keychainaccess.plist
+com.apple.locationmenu.plist
+com.apple.loginwindow.plist
+com.apple.madrid.plist
+com.apple.mail-shared.plist
+com.apple.mediaaccessibility.plist
+com.apple.mediaanalysisd.plist
+com.apple.menuextra.battery.plist
+com.apple.menuextra.clock.plist
+com.apple.messages.nicknames.plist
+com.apple.messages.pinning.plist
+com.apple.mmcs.plist
+com.apple.ncprefs.plist
+com.apple.osprey.plist
+com.apple.parsecd.plist
+com.apple.passd.plist
+com.apple.photos.shareddefaults.plist
+com.apple.preference.general.plist
+com.apple.preference.touchid.plist
+com.apple.preference.trackpad.plist
+com.apple.preferences.extensions.CredentialProvider.plist
+com.apple.preferences.extensions.PhotoEditing.plist
+com.apple.preferences.extensions.PhotoProjects.plist
+com.apple.preferences.extensions.QuickLook.plist
+com.apple.preferences.extensions.ServicesWithUI.plist
+com.apple.preferences.extensions.ShareMenu.plist
+com.apple.preferences.extensions.XcodeSourceEditor.plist
+com.apple.preferences.screentime.plist
+com.apple.preferences.softwareupdate.plist
+com.apple.print.PrintingPrefs.plist
+com.apple.print.add.plist
+com.apple.proactive.PersonalizationPortrait.plist
+com.apple.protectedcloudstorage.protectedcloudkeysyncing.plist
+com.apple.quicklook.ThumbnailsAgent.plist
+com.apple.rapport.plist
+com.apple.registration.plist
+com.apple.remindd.babysitter.plist
+com.apple.remindd.plist
+com.apple.scheduler.plist
+com.apple.screencapture.plist
+com.apple.screensaver.plist
+com.apple.scriptmenu.plist
+com.apple.security.KCN.plist
+com.apple.security.cloudkeychainproxy3.keysToRegister.plist
+com.apple.security.ctkd-db.plist
+com.apple.security.sosaccount.plist
+com.apple.sharingd.plist
+com.apple.siri.context.service.plist
+com.apple.spaces.plist
+com.apple.speech.recognition.AppleSpeechRecognition.CustomCommands.plist
+com.apple.speech.recognition.AppleSpeechRecognition.prefs.plist
+com.apple.speech.synthesis.general.prefs.plist
+com.apple.speech.voice.prefs.plist
+com.apple.stockholm.plist
+com.apple.studentd.plist
+com.apple.suggestd.plist
+com.apple.suggestions.plist
+com.apple.symbolichotkeys.plist
+com.apple.syncdefaultsd.plist
+com.apple.systempreferences.plist
+com.apple.systemuiserver.plist
+com.apple.talagent.plist
+com.apple.textInput.keyboardServices.textReplacement.plist
+com.apple.tourist.plist
+com.apple.touristd.plist
+com.apple.translationd.plist
+com.apple.triald.plist
+com.apple.universalaccess.plist
+com.apple.universalaccessAuthWarning.plist
+com.apple.xpc.activity2.plist
+com.brunophilipe.Cakebrew.plist
+com.colliderli.iina.plist
+com.github.marktext.marktext.plist
+com.googlecode.iterm2.plist
+com.macpaw.site.theunarchiver.plist
+com.microsoft.OneDriveStandaloneUpdater.plist
+com.microsoft.OneDriveUpdater.plist
+com.microsoft.autoupdate.fba.plist
+com.microsoft.autoupdate2.plist
+com.microsoft.shared.plist
+com.qtproject.plist
+com.ridiculousfish.HexFiend.plist
+com.sublimetext.4.plist
+com.uranusjr.macdown.plist
+knowledge-agent.plist
+loginwindow.plist
+mpv.plist
+net.freemacsoft.AppCleaner.plist
+org.cups.PrintingPrefs.plist
+org.m0k.transmission.plist
+org.mozilla.firefox.plist
+org.virtualbox.app.VirtualBox.plist
+org.virtualbox.app.VirtualBoxVM.plist
+pbs.plist
+siriknowledged.plist
+systemgroup.com.apple.icloud.searchpartyd.sharedsettings.plist
+
+
+/Library/Preferences
+Audio
+DirectoryService
+Logging
+OpenDirectory
+SystemConfiguration
+Xsan
+com.apple.AppleFileServer.plist
+com.apple.AssetCache.plist
+com.apple.BezelServices.plist
+com.apple.Bluetooth.plist
+com.apple.ByteRangeLocking.plist
+com.apple.FindMyMac.plist
+com.apple.HIToolbox.plist
+com.apple.MCX.plist
+com.apple.P2PSupervisor.plist
+com.apple.PowerManagement.A393A6CA-628F-5A5D-B941-402B3C408A92.plist
+com.apple.PowerManagement.plist
+com.apple.SoftwareUpdate.plist
+com.apple.TimeMachine.plist
+com.apple.ViewBridge.plist
+com.apple.airport.opproam.plist
+com.apple.alf.plist
+com.apple.apsd.launchd
+com.apple.apsd.plist
+com.apple.biometrickitd.plist
+com.apple.captive.plist
+com.apple.commerce.plist
+com.apple.dock.plist
+com.apple.driver.AppleIRController.plist
+com.apple.fsplaceholder
+com.apple.locationmenu.plist
+com.apple.loginwindow.plist
+com.apple.mdmclient.plist
+com.apple.networkextension.necp.plist
+com.apple.networkextension.uuidcache.plist
+com.apple.noticeboard.plist
+com.apple.powerlogd.plist
+com.apple.security.appsandbox.plist
+com.apple.security.systemidentities.plist
+com.apple.systemprefs.plist
+com.apple.timezone.auto.plist
+com.apple.updatesettings.plist
+com.apple.wifi.known-networks.plist
+com.microsoft.autoupdate2.plist
+org.cups.printers.plist
+
 
 
 
@@ -26,17 +336,6 @@ defaults read com.apple.screensaver
 }
 
 
-Handoff
-sudo -u $(whoami) defaults write "$HOME/Library/Preferences/ByHost/com.apple.coreservices.useractivityd.plist" ActivityAdvertisingAllowed -bool no
-sudo -u $(whoami) defaults write "$HOME/Library/Preferences/ByHost/com.apple.coreservices.useractivityd.plist" ActivityReceivingAllowed -bool no
-
-defaults write ~/Library/Preferences/ByHost/com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
-defaults write ~/Library/Preferences/ByHost/com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
-
-defaults -currentHost write com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
-defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
-
-
 
 [v]  Set appearance to "Graphite"
 defaults write -g AppleAquaColorVariant -int 6
@@ -49,8 +348,55 @@ defaults write com.apple.screensaver askForPasswordDelay -int 5
 defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 
 
+苹果官方节假日日历地址  
+大陆节日  webcal://p10-calendars.icloud.com/holiday/CN_zh.ics
+https://p48-calendars.icloud.com/holidays/cn_zh.ics
+https://p48-calendars.icloud.com/holidays/cn_nz.ics
 
 defaults write com.apple.helpviewer "DevMode" -bool "true";
+
+
+# Trim new lines and copy to clipboard
+alias c="tr -d '\n' | pbcopy"
+
+# Recursively delete `.DS_Store` files
+alias cleanup="find . -type f -name '*.DS_Store' -ls -delete"
+
+# Hide/show all desktop icons (useful when presenting)
+alias hidedesktop="defaults write com.apple.finder CreateDesktop -bool false && killall Finder"
+alias showdesktop="defaults write com.apple.finder CreateDesktop -bool true && killall Finder"
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print ul.quote_plus(sys.argv[1]);"'
+
+# Merge PDF files, preserving hyperlinks
+# Usage: `mergepdf input{1,2,3}.pdf`
+alias mergepdf='gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=_merged.pdf'
+
+# Disable Spotlight
+alias spotoff="sudo mdutil -a -i off"
+# Enable Spotlight
+alias spoton="sudo mdutil -a -i on"
+
+# Stuff I never really use but cannot delete either because of http://xkcd.com/530/
+alias stfu="osascript -e 'set volume output muted true'"
+alias pumpitup="osascript -e 'set volume output volume 100'"
+
+# Kill all the tabs in Chrome to free up memory
+# [C] explained: http://www.commandlinefu.com/commands/view/402/exclude-grep-from-your-grepped-output-of-ps-alias-included-in-description
+alias chromekill="ps ux | grep '[C]hrome Helper --type=renderer' | grep -v extension-process | tr -s ' ' | cut -d ' ' -f2 | xargs kill"
+
+
+# Intuitive map function
+# For example, to list all directories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map="xargs -n1"
+
+# One of @janmoesen’s ProTip™s
+for method in GET HEAD POST PUT DELETE TRACE OPTIONS; do
+    alias "${method}"="lwp-request -m '${method}'"
+done
+
 
 
 
@@ -121,18 +467,10 @@ defaults write com.apple.Safari ShowFavoritesBar -bool false
 # defaults write com.apple.Safari SearchProviderIdentifier -string "com.duckduckgo"
 # defaults write com.apple.SafariTechnologyPreview SearchProviderIdentifier -string "com.duckduckgo"
 
-# System Preferences > General > Appearance
-# Set Appearance to "Auto"
-# defaults write -g AppleInterfaceStyleSwitchesAutomatically -bool true
 
 # System Preferences > Language & Region > General > Time Format
 # Enforces 24 hour time across all timestamps and clocks
 defaults write -g AppleICUForce24HourTime -bool true
-
-
-# System Preferences > Dock & Menu Bar > Menu Bar
-# Automatically hide/show Menu Bar
-defaults write -g _HIHideMenuBar -bool true
 
 
 # System Preferences > Security & Privacy > Firewall
@@ -382,12 +720,6 @@ defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
 # Show path bar and status bar
 defaults write com.apple.finder ShowStatusBar -bool true
 defaults write com.apple.finder ShowPathbar -bool true
-
-# Devices for the sidebar
-defaults write com.apple.sidebarlists systemitems -dict-add ShowServers -int 1
-defaults write com.apple.sidebarlists systemitems -dict-add ShowRemovable -int 1
-defaults write com.apple.sidebarlists systemitems -dict-add ShowHardDisks -int 1
-defaults write com.apple.sidebarlists systemitems -dict-add ShowEjectables -int 1
 
 # Items to display on the desktop
 defaults write com.apple.finder ShowHardDrivesOnDesktop -int 1
@@ -1379,7 +1711,6 @@ set_defaults()
     defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
     defaults write NSGlobalDomain AppleICUForce24HourTime -int 1
     defaults write NSGlobalDomain AppleAquaColorVariant -int 6
-    defaults write NSGlobalDomain AppleInterfaceStyle "Dark"
     defaults write NSGlobalDomain \
         AppleMiniturizeOnDoubleClick -bool false
     defaults write NSGlobalDomain AppleShowScrollBars "Always"

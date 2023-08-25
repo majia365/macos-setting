@@ -42,11 +42,17 @@ then:
 存储App = 图书/邮件/地图/系统偏好设置
 ```
 
+### 家人共享 ### 
+
+```
+[家人共享]
+```
+
 ### 通用 ### 
 
 ```
 [通用]
-# 外观 = 深色
+# 外观 = 深色（Light:浅色/Dark:深色/Automatic:自动）
 % defaults delete NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically;
 % defaults write NSGlobalDomain AppleInterfaceStyle -string Dark;
 # 外观 = 自动
@@ -60,20 +66,23 @@ defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool tru
 % defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2;
 # 允许基于墙纸调整窗口色调 = ON
 % defaults write NSGlobalDomain AppleReduceDesktopTinting -bool false;
-# 显示滚动条 = 始终
+# 显示滚动条 = 始终（Automatic:根据鼠标或触控板自动显示/WhenScrolling:滚动时/Always:始终）
 % defaults write NSGlobalDomain AppleShowScrollBars -string Always;
-在滚动条中点按 = 跳至下一页
+# 在滚动条中点按 = 跳至下一页（0:跳至下一页/1:跳到点按的位置）
+% defaults write NSGlobalDomain AppleScrollerPagingBehavior -int 1;
 默认网页浏览器 = Safari
-首选以标签页方式打开文稿 = 永不
-关闭文稿时要求保存更改 = OFF
-退出App时关闭窗口 = ON
+# 首选以标签页方式打开文稿 = 永不（manual:永不/fullscreen:在全屏幕视图下/always:始终）
+% defaults write NSGlobalDomain AppleWindowTabbingMode -string manual;
+# 关闭文稿时要求保存更改 = OFF
+% defaults write NSGlobalDomain NSCloseAlwaysConfirmsChanges -bool false;
+# 退出App时关闭窗口 = ON
+% defaults write NSGlobalDomain NSQuitAlwaysKeepsWindows -bool false;
 最近使用的项目 = 5
-# 允许使用接力 = OFF
+# 允许使用接力Handoff = OFF
 % defaults -currentHost write com.apple.coreservices.useractivityd ActivityAdvertisingAllowed -bool false;
 % defaults -currentHost write com.apple.coreservices.useractivityd ActivityReceivingAllowed -bool false;
 ~~~
 使用平滑字体 = ON
-自动隐藏和显示菜单栏 = OFF
 ```
 
 ### 桌面与屏幕保护程序 ###
@@ -82,12 +91,30 @@ defaults write NSGlobalDomain AppleInterfaceStyleSwitchesAutomatically -bool tru
 [桌面与屏幕保护程序]
 ; 桌面
 ; 屏幕保护程序
-开始前闲置 = 1分钟
-屏幕保护程序 = 信息
+# 开始前闲置 = 1分钟
+% defaults -currentHost read com.apple.screensaver idleTime -int 60;
+# 屏幕保护程序 = 信息
+    moduleDict =     {
+        moduleName = "Computer Name";
+        path = "/System/Library/Frameworks/ScreenSaver.framework/PlugIns/Computer Name.appex";
+        type = 0;
+    };
+% defaults -currentHost write com.apple.screensaver moduleDict -dict-add moduleName "Computer Name";
+% defaults -currentHost write com.apple.screensaver moduleDict -dict-add path "/System/Library/Frameworks/ScreenSaver.framework/PlugIns/Computer Name.appex";
+% defaults -currentHost write com.apple.screensaver moduleDict -dict-add type 0;
 使用随机屏幕保护程序 = OFF
-与时钟一起显示 = OFF
+    moduleDict =     {
+        moduleName = Random;
+        path = "/System/Library/Screen Savers/Random.saver";
+        type = 8;
+    };
+defaults -currentHost write com.apple.screensaver moduleDict -dict-add moduleName "Random";
+defaults -currentHost write com.apple.screensaver moduleDict -dict-add path "/System/Library/Screen Savers/Random.saver";
+defaults -currentHost write com.apple.screensaver moduleDict -dict-add type 8;
+# 与时钟一起显示 = OFF
+% defaults -currentHost read com.apple.screensaver showClock -bool false;
 ; 屏幕保护程序 - 屏幕保护程序选项
-信息 = Windows XP
+信息 = Windows 11
 ; 屏幕保护程序 - 触发角
 # 右下 = 锁定屏幕
 % defaults write com.apple.dock wvous-br-corner -int 13;
@@ -127,24 +154,29 @@ Hot corners Possible values:
 [程序坞与菜单栏]
 # 大小（default value 48）
 % defaults write com.apple.dock tilesize -int 48;
-放大 = OFF
+# 放大 = OFF
+% defaults write com.apple.dock magnification -bool false;
 % defaults write com.apple.dock largesize -int 64;
-# 置于屏幕上的位置 = 右边（取值：left/bottom/right）
+# 置于屏幕上的位置 = 右边（取值：left:左边/bottom:底部/right:右边）
 % defaults write com.apple.dock orientation -string right;
-# 最小化窗口时使用 = 缩放效果（取值：genie/scale/suck）
+# 最小化窗口时使用 = 缩放效果（genie:神奇效果/scale:缩放效果/suck:）
 % defaults write com.apple.dock mineffect -string scale;
 # 连按窗口标题栏以 = 缩放（Minimize:最小化/Maximize:缩放）
 % defaults write NSGlobalDomain AppleActionOnDoubleClick -string Maximize;
-将窗口最小化为应用程序图标 = OFF
-弹跳打开应用程序 = ON
+# 将窗口最小化为应用程序图标 = OFF
+% defaults write com.apple.dock "minimize-to-application" -bool false;
+# 弹跳打开应用程序 = ON
+% defaults write com.apple.dock launchanim -bool true;
 # 自动显示和隐藏程序坞 = OFF
 % defaults write com.apple.dock autohide -bool false;
-% defaults write com.apple.dock autohide-time-modifier -float 0;
-% defaults write com.apple.Dock autohide-delay -float 0;
-为打开的应用程序显示指示灯 = ON
+% defaults write com.apple.dock "autohide-time-modifier" -float 0;
+% defaults write com.apple.Dock "autohide-delay" -float 0;
+# 为打开的应用程序显示指示灯 = ON
+% defaults write com.apple.dock "show-process-indicators" -bool true;
 # 在程序坞中显示最近使用的应用程序 = OFF
-% defaults write com.apple.dock show-recents -bool false;
-自动隐藏和显示菜单栏 = OFF
+% defaults write com.apple.dock "show-recents" -bool false;
+# 自动隐藏和显示菜单栏 = OFF
+% defaults write NSGlobalDomain "_HIHideMenuBar" -bool false;
 # 控制中心 - Wi-Fi
 在菜单栏中显示 = ON
 # 控制中心 - 蓝牙
@@ -208,10 +240,11 @@ Hot corners Possible values:
 ```
 [调度中心]
 #根据最近的使用情况自动重新排列空间 = OFF
-% defaults write com.apple.dock mru-spaces -bool false;
+% defaults write com.apple.dock "mru-spaces" -bool false;
 # 切换到某个应用程序时，会切换到包含该应用程序的打开窗口的空间 = ON
 % defaults write NSGlobalDomain AppleSpacesSwitchOnActivate -bool true;
-使窗口按应用程序成组 = OFF
+# 使窗口按应用程序成组 = OFF
+% defaults write com.apple.dock "expose-group-apps" -bool false;
 显示器具有单独的空间 = ON
 ---
 调度中心 = Ctl+上
@@ -224,11 +257,13 @@ killall Dock;
 
 ```
 [Siri]
-启用询问Siri = OFF
-在菜单栏中显示Siri = OFF
+# 启用询问Siri = OFF
+% defaults write com.apple.Siri VoiceTriggerUserEnabled -bool false;
+# 在菜单栏中显示Siri = OFF
+% defaults write com.apple.Siri StatusMenuVisible -bool false;
 ; Siri建议与隐私
-在App中显示Siri建议 = OFF
 基于此App进行学习 = OFF
+在App中显示Siri建议 = OFF
 ```
 
 ### 聚焦 ### 
@@ -238,6 +273,7 @@ killall Dock;
 ; 搜索结果
 Siri建议 = OFF
 日程与提醒事项 = OFF
+defaults read com.apple.Spotlight orderedItems
 ; 隐私
 防止聚焦搜索这些位置 = bt/xfile
 ~~~
@@ -250,15 +286,32 @@ Siri建议 = OFF
 [语言与地区]
 ; 通用
 首选语言 = 简体中文/English
-地区 = 中国大陆
-每周的第一天 = 星期一
+defaults read NSGlobalDomain AppleLanguages;
+(
+    "zh-Hans-CN",
+    "en-CN"
+)
+# 地区 = 中国大陆
+% defaults write NSGlobalDomain AppleLocale -string "zh_CN";
+# 每周的第一天 = 星期一
+% defaults write NSGlobalDomain AppleFirstWeekday -dict-add gregorian -int 2;
 日历 = 公历
-时间格式 = 24小时制
-温度 = 摄氏度
-列表排列顺序 = 中文拼音排序
+AppleLocale = "zh_CN@calendar=buddhist" lunar
+
+# 时间格式 = 24小时制
+% defaults write NSGlobalDomain AppleICUForce24HourTime -bool true;
+温度 = 摄氏度（Celsius:摄氏度/Fahrenheit:华氏度）
+% defaults write NSGlobalDomain AppleTemperatureUnit -string Celsius;
+# 列表排列顺序 = 中文拼音排序（pinyin:中文拼音排序/root:通用）
+% defaults write NSGlobalDomain AppleCollationOrder -string "zh@collation=pinyin";
+; 通用 - 高级 - 通用
+# 度量单位 = 公制
+% defaults write NSGlobalDomain AppleMetricUnits -bool true;
+% defaults write NSGlobalDomain AppleMeasurementUnits -string Centimeters;
 ; 通用 - 高级 - 时间
-正午前 = AM
-正午后 = PM
+# 正午前 = AM
+# 正午后 = PM
+% defaults write NSGlobalDomain AppleICUDateTimeSymbols -dict-add 5 '(AM,PM)';
 ```
 
 ### 通知 ### 
@@ -764,16 +817,16 @@ defaults read NSGlobalDomain NSUserQuotesArray
 用户根目录 = ON
 iCloud云盘 = ON
 用户主机 = OFF
-# 硬盘 = ON
-% defaults write com.apple.sidebarlists systemitems -dict-add ShowHardDisks -bool true;
-# 外置磁盘 = ON
-% defaults write com.apple.sidebarlists systemitems -dict-add ShowRemovable -bool true;
-% defaults write com.apple.sidebarlists systemitems -dict-add ShowEjectables -bool true;
+硬盘 = ON
+外置磁盘 = ON
 CDDVD和iOS设备 = ON
 云端存储空间 = ON
 Bonjour电脑 = ON
-# 已连接的服务器 = ON
-% defaults write com.apple.sidebarlists systemitems -dict-add ShowServers -bool true;
+已连接的服务器 = ON
+defaults write com.apple.sidebarlists systemitems -dict-add ShowServers -int 1;
+defaults write com.apple.sidebarlists systemitems -dict-add ShowRemovable -int 1;
+defaults write com.apple.sidebarlists systemitems -dict-add ShowHardDisks -int 1;
+defaults write com.apple.sidebarlists systemitems -dict-add ShowEjectables -int 1;
 最近使用的标签 = OFF
 ; 高级
 # 显示所有文件扩展名 = ON
@@ -1083,6 +1136,41 @@ vCard格式 = 3.0
 发送已读回执 = OFF
 ```
 
+### 地图 ###
+
+```
+[地图 - 偏好设置]
+; 通用
+# 始终使用浅色地图外观 = ON
+% defaults write com.apple.GEO GEOMapAppearanceModeKey -bool true;
+距离单位 = 公里
+使用大标签 = OFF
+# 始终以简体中文显示标签 = ON
+% defaults write com.apple.GEO GEOMapLocalizeLabels -bool true;
+# 显示天气状况 = OFF
+% defaults write com.apple.GEO ClimateShowWeatherConditions -bool false;
+# 显示空气质量指数 = OFF
+% defaults write com.apple.GEO ClimateShowAirQualityIndex -bool false;
+始终显示指南针 = ON
+始终显示缩放控制 = ON
+通过电子邮件跟进 = OFF
+; 路线规划
+首选交通类型 = 公交（0:驾车/1:步行/2:公交/4:骑车）
+% defaults write com.apple.GEO PreferredTransportType -int 2;
+```
+
+### 查找 ###
+
+```
+[查找 - 偏好设置]
+```
+
+### PhotoBooth ###
+
+```
+[PhotoBooth - 偏好设置]
+```
+
 ### 照片 ###
 
 ```
@@ -1112,6 +1200,195 @@ iCloud照片 = ON
 显示为 = 连续滚动
 使用逻辑页码 = ON
 将姓名添加到注解 = OFF
+```
+
+### 音乐 ###
+
+```
+[音乐 - 偏好设置]
+; 通用
+# 显示iTunes Store = OFF（ON:2/OFF:1）
+% defaults write com.apple.Music showStoreInSidebar -int 1;
+显示星级评分 = OFF
+歌曲列表复选框 = OFF
+列表大小 = 中
+# 歌曲更改时通知 = OFF
+% defaults write com.apple.Music userWantsPlaybackNotifications -bool false;
+; 播放
+; 文件
+; 访问限制
+; 高级
+# 自动更新插画 = OFF
+% defaults write com.apple.Music automaticallyDownloadArtwork -bool false;
+# 在其他所有窗口前端显示迷你播放程序 = OFF
+% defaults write com.apple.Music miniPlayerAlwaysOnTop -bool false;
+# 在其他所有窗口前端播放视频 = OFF
+% defaults write com.apple.Music movieWindowAlwaysOnTop -bool false;
+% killall Music;
+```
+
+### 播客 ###
+
+```
+[播客 - 偏好设置]
+```
+
+### 视频 ###
+
+```
+[视频 - 偏好设置]
+```
+
+### 语音备忘录 ###
+
+```
+[语音备忘录 - 偏好设置]
+```
+
+### 股市 ###
+
+```
+[股市 - 偏好设置]
+```
+
+### 图书 ###
+
+```
+[图书 - 偏好设置]
+```
+
+### 词典 ###
+
+```
+[词典 - 偏好设置]
+```
+
+### 计算器 ###
+
+```
+[计算器 - 偏好设置]
+```
+
+### 家庭 ###
+
+```
+[家庭 - 偏好设置]
+```
+
+### Siri ###
+
+```
+[Siri - 偏好设置]
+```
+
+### 调度中心 ###
+
+```
+[调度中心 - 偏好设置]
+```
+
+### QuickTimePlayer ###
+
+```
+[QuickTimePlayer - 偏好设置]
+```
+
+### 文本编辑 ###
+
+```
+[文本编辑 - 偏好设置]
+# 格式 = 纯文本
+% defaults write com.apple.TextEdit RichText -bool false;
+# 按页面换行 = OFF
+% defaults write com.apple.TextEdit ShowPageBreaks -bool false;
+; 选项
+# 键入时检查拼写 = OFF
+% defaults write com.apple.TextEdit CheckSpellingWhileTyping -bool false;
+# 检查拼写和语法 = OFF
+% defaults write com.apple.TextEdit CheckGrammarWithSpelling -bool false;
+# 自动纠正拼写 = OFF
+% defaults write com.apple.TextEdit CorrectSpellingAutomatically -bool false;
+# 显示标尺 = OFF
+% defaults write com.apple.TextEdit ShowRuler -bool false;
+# 数据检测器 = OFF
+% defaults write com.apple.TextEdit DataDetectors -bool false;
+# 仅在多信息文本文稿中使用智能引号和破折号 = OFF
+% defaults write com.apple.TextEdit SmartSubstitutionsEnabledInRichTextOnly -bool false;
+# 智能拷贝粘贴 = OFF
+% defaults write com.apple.TextEdit SmartCopyPaste -bool false;
+# 智能引号 = OFF
+% defaults write com.apple.TextEdit SmartQuotes -bool false;
+# 智能破折号 = OFF
+% defaults write com.apple.TextEdit SmartDashes -bool false;
+# 智能链接 = OFF
+% defaults write com.apple.TextEdit SmartLinks -bool false;
+# 文本替换 = OFF
+% defaults write com.apple.TextEdit TextReplacement -bool false;
+; 打开和存储
+# HTML文件显示为HTML代码 = ON
+% defaults write com.apple.TextEdit IgnoreHTML -bool true;
+# RTF文件显示为RTF代码 = OFF
+% defaults write com.apple.TextEdit IgnoreRichText -bool true;
+# 给纯文本文件添加.txt扩展名 = ON
+% defaults write com.apple.TextEdit AddExtensionToNewPlainTextFiles -bool false;
+# 纯文本文件打开/存储编码 = UTF-8
+% defaults write com.apple.TextEdit PlainTextEncoding -int 4;
+% defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4;
+HTML存储文稿类型 = HTML 4.01 Strict
+HTML存储样式化 = 嵌入式CSS
+HTML存储编码 = UTF-8
+# HTML存储保留空白区域 = ON
+% defaults write com.apple.TextEdit PreserveWhitespace -bool true;
+% killall TextEdit;
+```
+
+```
+# 文本编辑相关
+# 默认保存位置 = 文稿
+% defaults write com.apple.TextEdit NSNavLastRootDirectory -string "~/Documents";
+% killall TextEdit;
+```
+
+### Grapher ###
+
+```
+[Grapher - 偏好设置]
+```
+
+### 时间机器 ###
+
+```
+[时间机器 - 偏好设置]
+```
+
+### 字体册 ###
+
+```
+[字体册 - 偏好设置]
+```
+
+### 国际象棋 ###
+
+```
+[国际象棋 - 偏好设置]
+```
+
+### 旁白实用工具 ###
+
+```
+[旁白实用工具 - 偏好设置]
+```
+
+### AirPort实用工具 ###
+
+```
+[AirPort实用工具 - 偏好设置]
+```
+
+### 迁移助理 ###
+
+```
+[迁移助理 - 偏好设置]
 ```
 
 ### 终端 ###
@@ -1213,62 +1490,6 @@ defaults read com.apple.Terminal StringEncodings;
 % killall Terminal;
 ```
 
-### 文本编辑 ###
-
-```
-[文本编辑 - 偏好设置]
-# 格式 = 纯文本
-% defaults write com.apple.TextEdit RichText -bool false;
-# 按页面换行 = OFF
-% defaults write com.apple.TextEdit ShowPageBreaks -bool false;
-; 选项
-# 键入时检查拼写 = OFF
-% defaults write com.apple.TextEdit CheckSpellingWhileTyping -bool false;
-# 检查拼写和语法 = OFF
-% defaults write com.apple.TextEdit CheckGrammarWithSpelling -bool false;
-# 自动纠正拼写 = OFF
-% defaults write com.apple.TextEdit CorrectSpellingAutomatically -bool false;
-# 显示标尺 = OFF
-% defaults write com.apple.TextEdit ShowRuler -bool false;
-# 数据检测器 = OFF
-% defaults write com.apple.TextEdit DataDetectors -bool false;
-# 仅在多信息文本文稿中使用智能引号和破折号 = OFF
-% defaults write com.apple.TextEdit SmartSubstitutionsEnabledInRichTextOnly -bool false;
-# 智能拷贝粘贴 = OFF
-% defaults write com.apple.TextEdit SmartCopyPaste -bool false;
-# 智能引号 = OFF
-% defaults write com.apple.TextEdit SmartQuotes -bool false;
-# 智能破折号 = OFF
-% defaults write com.apple.TextEdit SmartDashes -bool false;
-# 智能链接 = OFF
-% defaults write com.apple.TextEdit SmartLinks -bool false;
-# 文本替换 = OFF
-% defaults write com.apple.TextEdit TextReplacement -bool false;
-; 打开和存储
-# HTML文件显示为HTML代码 = ON
-% defaults write com.apple.TextEdit IgnoreHTML -bool true;
-# RTF文件显示为RTF代码 = OFF
-% defaults write com.apple.TextEdit IgnoreRichText -bool true;
-# 给纯文本文件添加.txt扩展名 = ON
-% defaults write com.apple.TextEdit AddExtensionToNewPlainTextFiles -bool false;
-# 纯文本文件打开/存储编码 = UTF-8
-% defaults write com.apple.TextEdit PlainTextEncoding -int 4;
-% defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4;
-HTML存储文稿类型 = HTML 4.01 Strict
-HTML存储样式化 = 嵌入式CSS
-HTML存储编码 = UTF-8
-# HTML存储保留空白区域 = ON
-% defaults write com.apple.TextEdit PreserveWhitespace -bool true;
-% killall TextEdit;
-```
-
-```
-# 文本编辑相关
-# 默认保存位置 = 文稿
-% defaults write com.apple.TextEdit NSNavLastRootDirectory -string "~/Documents";
-% killall TextEdit;
-```
-
 ### 活动监视器 ###
 
 ```
@@ -1283,46 +1504,59 @@ HTML存储编码 = UTF-8
 % killall Activity\ Monitor;
 ```
 
-### 音乐 ###
+### 控制台 ###
 
 ```
-[音乐 - 偏好设置]
-; 通用
-# 显示iTunes Store = OFF（ON:2/OFF:1）
-% defaults write com.apple.Music showStoreInSidebar -int 1;
-显示星级评分 = OFF
-歌曲列表复选框 = OFF
-列表大小 = 中
-# 歌曲更改时通知 = OFF
-% defaults write com.apple.Music userWantsPlaybackNotifications -bool false;
-; 播放
-; 文件
-; 访问限制
-; 高级
-# 自动更新插画 = OFF
-% defaults write com.apple.Music automaticallyDownloadArtwork -bool false;
-# 在其他所有窗口前端显示迷你播放程序 = OFF
-% defaults write com.apple.Music miniPlayerAlwaysOnTop -bool false;
-# 在其他所有窗口前端播放视频 = OFF
-% defaults write com.apple.Music movieWindowAlwaysOnTop -bool false;
-% killall Music;
+[控制台 - 偏好设置]
 ```
 
-
-## 系统优化设置 ##
-
-
-### 启动台相关 ###
+### 钥匙串访问 ###
 
 ```
-# 启动台相关
-# 启动台大小 = 9*7
-% defaults write com.apple.dock springboard-columns -int 9;
-% defaults write com.apple.dock springboard-rows -int 7;
-% killall Dock;
+[钥匙串访问 - 偏好设置]
 ```
 
-### 截屏相关 ###
+### 系统信息 ###
+
+```
+[系统信息 - 偏好设置]
+```
+
+### 自动操作 ###
+
+```
+[自动操作 - 偏好设置]
+```
+
+### 脚本编辑器 ###
+
+```
+[脚本编辑器 - 偏好设置]
+```
+
+### 磁盘工具 ###
+
+```
+[磁盘工具 - 偏好设置]
+```
+
+### 数码测色计 ###
+
+```
+[数码测色计 - 偏好设置]
+```
+
+### 色彩同步实用工具 ###
+
+```
+[色彩同步实用工具 - 偏好设置]
+```
+
+### 截屏 ###
+
+```
+[截屏 - 偏好设置]
+```
 
 ```
 # 截屏相关
@@ -1341,6 +1575,32 @@ HTML存储编码 = UTF-8
 % killall SystemUIServer;
 ```
 
+### 蓝牙文件交换 ###
+
+```
+[蓝牙文件交换 - 偏好设置]
+```
+
+### 音频MIDI设置 ###
+
+```
+[音频MIDI设置 - 偏好设置]
+```
+
+
+## 系统优化设置 ##
+
+
+### 启动台相关 ###
+
+```
+# 启动台相关
+# 启动台大小 = 9*7
+% defaults write com.apple.dock springboard-columns -int 9;
+% defaults write com.apple.dock springboard-rows -int 7;
+% killall Dock;
+```
+
 ### 磁盘相关 ###
 
 ```
@@ -1349,7 +1609,7 @@ HTML存储编码 = UTF-8
 % defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true;
 % defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true;
 # 打开/关闭SSD磁盘Trim功能
-sudo trimforce enable/disable
+sudo trimforce enable/disable;
 ```
 
 ### 安全相关 ###
