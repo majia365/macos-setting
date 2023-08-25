@@ -356,6 +356,8 @@ https://p48-calendars.icloud.com/holidays/cn_nz.ics
 defaults write com.apple.helpviewer "DevMode" -bool "true";
 
 
+alias afk="osascript -e 'tell application \"System Events\" to keystroke \"q\" using {command down,control down}'"
+
 # Trim new lines and copy to clipboard
 alias c="tr -d '\n' | pbcopy"
 
